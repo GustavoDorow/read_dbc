@@ -1,0 +1,6 @@
+[package]
+name = "read_dbc_format"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]

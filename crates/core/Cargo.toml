@@ -1,0 +1,8 @@
+[package]
+name = "read_dbc_core"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+duckdb-neo.workspace = true
+read_dbc_format.workspace = true

@@ -1,0 +1,16 @@
+/target
+build
+configure
+.idea
+duckdb_unittest_tempdir
+/test/bin
+venv
+
+# DATASUS fixtures are downloaded, not committed
+/test/data/
+/test/reference/
+
+# Research scratch: downloaded samples, third-party sources, proprietary-binary notes
+/docs/research/work/data/
+/docs/research/work/sources/
+/docs/research/work/tabwin-crc-disassembly.txt

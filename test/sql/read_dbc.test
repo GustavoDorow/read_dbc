@@ -1,0 +1,16 @@
+# name: test/sql/read_dbc.test
+# description: the read_dbc extension loads and reports its version
+# group: [read_dbc]
+
+# Before we load the extension, this will fail
+statement error
+SELECT read_dbc_version();
+----
+Catalog Error: Scalar Function with name read_dbc_version does not exist!
+
+require read_dbc
+
+query T
+SELECT read_dbc_version();
+----
+0.1.0

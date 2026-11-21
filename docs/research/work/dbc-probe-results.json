@@ -1,0 +1,1181 @@
+[
+  {
+    "file": "DNAC1996.DBC",
+    "size": 247527,
+    "sha256": "9da9227caa11802bc7c46454fd93ed002624c0a932261f713feb44ca9203100f",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 705,
+    "header_final_byte": "0d",
+    "record_length": 162,
+    "record_count": 14236,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "197e6494",
+    "compressed_consumed": 246818,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 2306232,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -2,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "21a73c80",
+      "descriptors": "6ed850f8",
+      "header": "ecfd14eb",
+      "header_without_final_byte": "918cbdea",
+      "header_normalized_to_0D": "ecfd14eb",
+      "compressed_to_EOF": "2bcaec0a",
+      "compressed_consumed": "2bcaec0a",
+      "compressed_consumed_without_DCL_header": "f4a5b219",
+      "trailer": "00000000",
+      "decoded_all": "7af13555",
+      "decoded_declared_records": "7af13555",
+      "decoded_without_final_1A": "7af13555",
+      "decoded_with_forced_final_1A": "341b42b9",
+      "raw_header_plus_decoded_all": "94647e19",
+      "raw_header_plus_declared_records": "94647e19",
+      "raw_header_plus_decoded_without_final_1A": "94647e19",
+      "raw_header_plus_decoded_with_forced_final_1A": "4b9fda49",
+      "normalized_header_plus_decoded_all": "94647e19",
+      "normalized_header_plus_declared_records": "94647e19",
+      "omitted_header_final_byte_plus_decoded_all": "b45e47a1",
+      "raw_header_plus_compressed_to_EOF": "3744388b",
+      "header_plus_zero_field_plus_compressed_to_EOF": "3d7b9e68",
+      "stored_field_plus_compressed_to_EOF": "7710e731",
+      "whole_DBC_including_stored_field": "19744209"
+    },
+    "field_count": 21,
+    "field_types": {
+      "C": 21
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 21,
+    "sum_width_plus_flag": 162,
+    "declared_record_bytes": 2306232,
+    "complete_declared_records": 14236,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 14236
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 100196,
+        "last_NUL": 0,
+        "last_space": 270484
+      }
+    }
+  },
+  {
+    "file": "DNAC2022.dbc",
+    "size": 681675,
+    "sha256": "199c1acfe6311d08a421b6df1c30d1dd47f12147393e5a385187020441f8e77d",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 1985,
+    "header_final_byte": "0d",
+    "record_length": 224,
+    "record_count": 14483,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "19e99d4c",
+    "compressed_consumed": 679686,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 3244193,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "381e8730",
+      "descriptors": "a7447a4c",
+      "header": "fdad77c5",
+      "header_without_final_byte": "c0e4cf31",
+      "header_normalized_to_0D": "fdad77c5",
+      "compressed_to_EOF": "25b51747",
+      "compressed_consumed": "25b51747",
+      "compressed_consumed_without_DCL_header": "96f7e487",
+      "trailer": "00000000",
+      "decoded_all": "244b65b9",
+      "decoded_declared_records": "f0ac6fcf",
+      "decoded_without_final_1A": "f0ac6fcf",
+      "decoded_with_forced_final_1A": "244b65b9",
+      "raw_header_plus_decoded_all": "4c9de919",
+      "raw_header_plus_declared_records": "fb93371d",
+      "raw_header_plus_decoded_without_final_1A": "fb93371d",
+      "raw_header_plus_decoded_with_forced_final_1A": "4c9de919",
+      "normalized_header_plus_decoded_all": "4c9de919",
+      "normalized_header_plus_declared_records": "fb93371d",
+      "omitted_header_final_byte_plus_decoded_all": "12207223",
+      "raw_header_plus_compressed_to_EOF": "eac6ff64",
+      "header_plus_zero_field_plus_compressed_to_EOF": "1c55c552",
+      "stored_field_plus_compressed_to_EOF": "8f3d9224",
+      "whole_DBC_including_stored_field": "9582e6f8"
+    },
+    "field_count": 61,
+    "field_types": {
+      "C": 61
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 61,
+    "sum_width_plus_flag": 224,
+    "declared_record_bytes": 3244192,
+    "complete_declared_records": 14483,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 14483
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 71629,
+        "last_NUL": 0,
+        "last_space": 244607
+      }
+    }
+  },
+  {
+    "file": "DNRAC1994.dbc",
+    "size": 277876,
+    "sha256": "6aa5d52bdc3e12603cfe230afd164c62bde8089b50532271b2465a52a12ce65d",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 993,
+    "header_final_byte": "0d",
+    "record_length": 239,
+    "record_count": 12127,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "c34b5b5d",
+    "compressed_consumed": 276879,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 2898353,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -2,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "552f6911",
+      "descriptors": "f96fae2f",
+      "header": "965e42c5",
+      "header_without_final_byte": "58803b61",
+      "header_normalized_to_0D": "965e42c5",
+      "compressed_to_EOF": "c2402ede",
+      "compressed_consumed": "c2402ede",
+      "compressed_consumed_without_DCL_header": "c4dbea52",
+      "trailer": "00000000",
+      "decoded_all": "536107ec",
+      "decoded_declared_records": "536107ec",
+      "decoded_without_final_1A": "536107ec",
+      "decoded_with_forced_final_1A": "868fd9a3",
+      "raw_header_plus_decoded_all": "5d5b4bc3",
+      "raw_header_plus_declared_records": "5d5b4bc3",
+      "raw_header_plus_decoded_without_final_1A": "5d5b4bc3",
+      "raw_header_plus_decoded_with_forced_final_1A": "2d50deb6",
+      "normalized_header_plus_decoded_all": "5d5b4bc3",
+      "normalized_header_plus_declared_records": "5d5b4bc3",
+      "omitted_header_final_byte_plus_decoded_all": "15f5a567",
+      "raw_header_plus_compressed_to_EOF": "1bac7fb6",
+      "header_plus_zero_field_plus_compressed_to_EOF": "7b0aa6ca",
+      "stored_field_plus_compressed_to_EOF": "68889a2e",
+      "whole_DBC_including_stored_field": "f6a0d7d5"
+    },
+    "field_count": 30,
+    "field_types": {
+      "C": 30
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 30,
+    "sum_width_plus_flag": 239,
+    "declared_record_bytes": 2898353,
+    "complete_declared_records": 12127,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 12127
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 87945,
+        "last_NUL": 0,
+        "last_space": 351683
+      }
+    }
+  },
+  {
+    "file": "DNRRR1995.dbc",
+    "size": 156322,
+    "sha256": "bb06e2c576acbc036fd392e0c29005b4e7cb4e99b5b44ad0972586d57e5b4a99",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 993,
+    "header_final_byte": "0d",
+    "record_length": 239,
+    "record_count": 7020,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "3dfc61a6",
+    "compressed_consumed": 155325,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 1677780,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -2,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "f9cd8afc",
+      "descriptors": "f96fae2f",
+      "header": "0a345f66",
+      "header_without_final_byte": "3b9b31a5",
+      "header_normalized_to_0D": "0a345f66",
+      "compressed_to_EOF": "d3a77a21",
+      "compressed_consumed": "d3a77a21",
+      "compressed_consumed_without_DCL_header": "91f6dcf2",
+      "trailer": "00000000",
+      "decoded_all": "556d3efa",
+      "decoded_declared_records": "556d3efa",
+      "decoded_without_final_1A": "556d3efa",
+      "decoded_with_forced_final_1A": "725d60cb",
+      "raw_header_plus_decoded_all": "a661fc3d",
+      "raw_header_plus_declared_records": "a661fc3d",
+      "raw_header_plus_decoded_without_final_1A": "a661fc3d",
+      "raw_header_plus_decoded_with_forced_final_1A": "77ae3b1a",
+      "normalized_header_plus_decoded_all": "a661fc3d",
+      "normalized_header_plus_declared_records": "a661fc3d",
+      "omitted_header_final_byte_plus_decoded_all": "28cd5862",
+      "raw_header_plus_compressed_to_EOF": "fd5fb16e",
+      "header_plus_zero_field_plus_compressed_to_EOF": "4347f825",
+      "stored_field_plus_compressed_to_EOF": "cfbb0c74",
+      "whole_DBC_including_stored_field": "91855bc4"
+    },
+    "field_count": 30,
+    "field_types": {
+      "C": 30
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 30,
+    "sum_width_plus_flag": 239,
+    "declared_record_bytes": 1677780,
+    "complete_declared_records": 7020,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 7020
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 38967,
+        "last_NUL": 0,
+        "last_space": 203580
+      }
+    }
+  },
+  {
+    "file": "DNRRR95.DBC",
+    "size": 156322,
+    "sha256": "bb06e2c576acbc036fd392e0c29005b4e7cb4e99b5b44ad0972586d57e5b4a99",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 993,
+    "header_final_byte": "0d",
+    "record_length": 239,
+    "record_count": 7020,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "3dfc61a6",
+    "compressed_consumed": 155325,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 1677780,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -2,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "f9cd8afc",
+      "descriptors": "f96fae2f",
+      "header": "0a345f66",
+      "header_without_final_byte": "3b9b31a5",
+      "header_normalized_to_0D": "0a345f66",
+      "compressed_to_EOF": "d3a77a21",
+      "compressed_consumed": "d3a77a21",
+      "compressed_consumed_without_DCL_header": "91f6dcf2",
+      "trailer": "00000000",
+      "decoded_all": "556d3efa",
+      "decoded_declared_records": "556d3efa",
+      "decoded_without_final_1A": "556d3efa",
+      "decoded_with_forced_final_1A": "725d60cb",
+      "raw_header_plus_decoded_all": "a661fc3d",
+      "raw_header_plus_declared_records": "a661fc3d",
+      "raw_header_plus_decoded_without_final_1A": "a661fc3d",
+      "raw_header_plus_decoded_with_forced_final_1A": "77ae3b1a",
+      "normalized_header_plus_decoded_all": "a661fc3d",
+      "normalized_header_plus_declared_records": "a661fc3d",
+      "omitted_header_final_byte_plus_decoded_all": "28cd5862",
+      "raw_header_plus_compressed_to_EOF": "fd5fb16e",
+      "header_plus_zero_field_plus_compressed_to_EOF": "4347f825",
+      "stored_field_plus_compressed_to_EOF": "cfbb0c74",
+      "whole_DBC_including_stored_field": "91855bc4"
+    },
+    "field_count": 30,
+    "field_types": {
+      "C": 30
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 30,
+    "sum_width_plus_flag": 239,
+    "declared_record_bytes": 1677780,
+    "complete_declared_records": 7020,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 7020
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 38967,
+        "last_NUL": 0,
+        "last_space": 203580
+      }
+    }
+  },
+  {
+    "file": "DOAC2022.dbc",
+    "size": 330408,
+    "sha256": "04a015b690068baeb42e7e83165e3b9de43f2881bebdf46f0eea5ad0b9984a51",
+    "version": "03",
+    "language_driver": "35",
+    "header_length": 2817,
+    "header_final_byte": "0d",
+    "record_length": 490,
+    "record_count": 4159,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "f09f3fdf",
+    "compressed_consumed": 327587,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 2037911,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "83a24987",
+      "descriptors": "5e46a54f",
+      "header": "e3cdfbeb",
+      "header_without_final_byte": "a19a89a3",
+      "header_normalized_to_0D": "e3cdfbeb",
+      "compressed_to_EOF": "60f51b69",
+      "compressed_consumed": "60f51b69",
+      "compressed_consumed_without_DCL_header": "91009c0d",
+      "trailer": "00000000",
+      "decoded_all": "2adfe2e1",
+      "decoded_declared_records": "bfa305c7",
+      "decoded_without_final_1A": "bfa305c7",
+      "decoded_with_forced_final_1A": "2adfe2e1",
+      "raw_header_plus_decoded_all": "df3f9ff0",
+      "raw_header_plus_declared_records": "501a4390",
+      "raw_header_plus_decoded_without_final_1A": "501a4390",
+      "raw_header_plus_decoded_with_forced_final_1A": "df3f9ff0",
+      "normalized_header_plus_decoded_all": "df3f9ff0",
+      "normalized_header_plus_declared_records": "501a4390",
+      "omitted_header_final_byte_plus_decoded_all": "ef2f6767",
+      "raw_header_plus_compressed_to_EOF": "5284e096",
+      "header_plus_zero_field_plus_compressed_to_EOF": "00d41874",
+      "stored_field_plus_compressed_to_EOF": "501164ab",
+      "whole_DBC_including_stored_field": "c976e75c"
+    },
+    "field_count": 87,
+    "field_types": {
+      "C": 87
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 87,
+    "sum_width_plus_flag": 490,
+    "declared_record_bytes": 2037910,
+    "complete_declared_records": 4159,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 4159
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 189140,
+        "last_NUL": 0,
+        "last_space": 243930
+      }
+    }
+  },
+  {
+    "file": "PAAC2401.dbc",
+    "size": 2767043,
+    "sha256": "b1540eba00a1fa2c1dd1f6e2b26e502838f07f235428187f0cc55e181c36fbc7",
+    "version": "03",
+    "language_driver": "03",
+    "header_length": 1953,
+    "header_final_byte": "0d",
+    "record_length": 397,
+    "record_count": 105836,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "82489333",
+    "compressed_consumed": 2765086,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 42016893,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "e6f0dc53",
+      "descriptors": "2e3caf4d",
+      "header": "94b773d1",
+      "header_without_final_byte": "dc2225a2",
+      "header_normalized_to_0D": "94b773d1",
+      "compressed_to_EOF": "c8928f6d",
+      "compressed_consumed": "c8928f6d",
+      "compressed_consumed_without_DCL_header": "acf7126d",
+      "trailer": "00000000",
+      "decoded_all": "47cde220",
+      "decoded_declared_records": "70472fd2",
+      "decoded_without_final_1A": "70472fd2",
+      "decoded_with_forced_final_1A": "47cde220",
+      "raw_header_plus_decoded_all": "33934882",
+      "raw_header_plus_declared_records": "9f3f1751",
+      "raw_header_plus_decoded_without_final_1A": "9f3f1751",
+      "raw_header_plus_decoded_with_forced_final_1A": "33934882",
+      "normalized_header_plus_decoded_all": "33934882",
+      "normalized_header_plus_declared_records": "9f3f1751",
+      "omitted_header_final_byte_plus_decoded_all": "26d5b729",
+      "raw_header_plus_compressed_to_EOF": "71ca95ae",
+      "header_plus_zero_field_plus_compressed_to_EOF": "310f8272",
+      "stored_field_plus_compressed_to_EOF": "3436fe0f",
+      "whole_DBC_including_stored_field": "81a04535"
+    },
+    "field_count": 60,
+    "field_types": {
+      "C": 50,
+      "N": 10
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ],
+      "N": [
+        0,
+        2
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 60,
+    "sum_width_plus_flag": 397,
+    "declared_record_bytes": 42016892,
+    "complete_declared_records": 105836,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 105836
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 286586,
+        "last_NUL": 0,
+        "last_space": 401330
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 1058360,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  },
+  {
+    "file": "RDAC0801.dbc",
+    "size": 114153,
+    "sha256": "fde119624f5ba8400fdd25f086be6180bb25440c141dbf9ae634b7f417d0f28d",
+    "version": "03",
+    "language_driver": "02",
+    "header_length": 2785,
+    "header_final_byte": "0d",
+    "record_length": 500,
+    "record_count": 2087,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "5a50949b",
+    "compressed_consumed": 111364,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 1043501,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "5bbc7edf",
+      "descriptors": "50b4acdb",
+      "header": "65ec4c7a",
+      "header_without_final_byte": "53ffcc73",
+      "header_normalized_to_0D": "65ec4c7a",
+      "compressed_to_EOF": "ae2918ce",
+      "compressed_consumed": "ae2918ce",
+      "compressed_consumed_without_DCL_header": "b354979c",
+      "trailer": "00000000",
+      "decoded_all": "dd90e762",
+      "decoded_declared_records": "92f1db53",
+      "decoded_without_final_1A": "92f1db53",
+      "decoded_with_forced_final_1A": "dd90e762",
+      "raw_header_plus_decoded_all": "9b94505a",
+      "raw_header_plus_declared_records": "fff89afc",
+      "raw_header_plus_decoded_without_final_1A": "fff89afc",
+      "raw_header_plus_decoded_with_forced_final_1A": "9b94505a",
+      "normalized_header_plus_decoded_all": "9b94505a",
+      "normalized_header_plus_declared_records": "fff89afc",
+      "omitted_header_final_byte_plus_decoded_all": "19d9ae0a",
+      "raw_header_plus_compressed_to_EOF": "178d2df4",
+      "header_plus_zero_field_plus_compressed_to_EOF": "ba2a8fa5",
+      "stored_field_plus_compressed_to_EOF": "b67fad8d",
+      "whole_DBC_including_stored_field": "739fe0f6"
+    },
+    "field_count": 86,
+    "field_types": {
+      "C": 55,
+      "N": 31
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ],
+      "N": [
+        0,
+        2
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 86,
+    "sum_width_plus_flag": 500,
+    "declared_record_bytes": 1043500,
+    "complete_declared_records": 2087,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 2087
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 23017,
+        "last_NUL": 0,
+        "last_space": 23118
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 60855,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  },
+  {
+    "file": "RDAC2401.dbc",
+    "size": 313213,
+    "sha256": "41b7ad58932cd56d6c60455cbf67e7995f5fd2e64375d0cc440631a191638429",
+    "version": "03",
+    "language_driver": "02",
+    "header_length": 3649,
+    "header_final_byte": "0d",
+    "record_length": 702,
+    "record_count": 4315,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "fe878e78",
+    "compressed_consumed": 309560,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 3029130,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "57833894",
+      "descriptors": "ae7ff350",
+      "header": "3ecd9b30",
+      "header_without_final_byte": "ac869bcc",
+      "header_normalized_to_0D": "3ecd9b30",
+      "compressed_to_EOF": "350dd1bb",
+      "compressed_consumed": "350dd1bb",
+      "compressed_consumed_without_DCL_header": "439b1c6b",
+      "trailer": "00000000",
+      "decoded_all": "1da37725",
+      "decoded_declared_records": "1da37725",
+      "decoded_without_final_1A": "1da37725",
+      "decoded_with_forced_final_1A": "647961c7",
+      "raw_header_plus_decoded_all": "788e87fe",
+      "raw_header_plus_declared_records": "788e87fe",
+      "raw_header_plus_decoded_without_final_1A": "788e87fe",
+      "raw_header_plus_decoded_with_forced_final_1A": "751d476b",
+      "normalized_header_plus_decoded_all": "788e87fe",
+      "normalized_header_plus_declared_records": "788e87fe",
+      "omitted_header_final_byte_plus_decoded_all": "3bec5ec4",
+      "raw_header_plus_compressed_to_EOF": "30fcbcf9",
+      "header_plus_zero_field_plus_compressed_to_EOF": "d2d70195",
+      "stored_field_plus_compressed_to_EOF": "da5ab456",
+      "whole_DBC_including_stored_field": "d68558e0"
+    },
+    "field_count": 113,
+    "field_types": {
+      "C": 77,
+      "N": 36
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ],
+      "N": [
+        0,
+        2
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 113,
+    "sum_width_plus_flag": 702,
+    "declared_record_bytes": 3029130,
+    "complete_declared_records": 4315,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 4315
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 72650,
+        "last_NUL": 0,
+        "last_space": 73227
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 147146,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  },
+  {
+    "file": "RDRR2401.dbc",
+    "size": 275725,
+    "sha256": "37741f8b16adcf0f19ff837f9abbf9c46af4b6c128f5599867fe0fa7940eccb5",
+    "version": "03",
+    "language_driver": "02",
+    "header_length": 3649,
+    "header_final_byte": "0d",
+    "record_length": 702,
+    "record_count": 3714,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "dbd8e297",
+    "compressed_consumed": 272072,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 2607228,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "0d169be9",
+      "descriptors": "ae7ff350",
+      "header": "62e9e2d2",
+      "header_without_final_byte": "3b957d77",
+      "header_normalized_to_0D": "62e9e2d2",
+      "compressed_to_EOF": "93333d94",
+      "compressed_consumed": "93333d94",
+      "compressed_consumed_without_DCL_header": "2a798f81",
+      "trailer": "00000000",
+      "decoded_all": "4ae76c49",
+      "decoded_declared_records": "4ae76c49",
+      "decoded_without_final_1A": "4ae76c49",
+      "decoded_with_forced_final_1A": "202a08af",
+      "raw_header_plus_decoded_all": "97e2d8db",
+      "raw_header_plus_declared_records": "97e2d8db",
+      "raw_header_plus_decoded_without_final_1A": "97e2d8db",
+      "raw_header_plus_decoded_with_forced_final_1A": "3ef6ff73",
+      "normalized_header_plus_decoded_all": "97e2d8db",
+      "normalized_header_plus_declared_records": "97e2d8db",
+      "omitted_header_final_byte_plus_decoded_all": "9389cb88",
+      "raw_header_plus_compressed_to_EOF": "854955ec",
+      "header_plus_zero_field_plus_compressed_to_EOF": "089dc5af",
+      "stored_field_plus_compressed_to_EOF": "b8fdd3f3",
+      "whole_DBC_including_stored_field": "71b6e535"
+    },
+    "field_count": 113,
+    "field_types": {
+      "C": 77,
+      "N": 36
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ],
+      "N": [
+        0,
+        2
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 113,
+    "sum_width_plus_flag": 702,
+    "declared_record_bytes": 2607228,
+    "complete_declared_records": 3714,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 3714
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 65488,
+        "last_NUL": 0,
+        "last_space": 66155
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 127164,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  },
+  {
+    "file": "STAC2401.dbc",
+    "size": 62096,
+    "sha256": "b411030223ac367e16a024b0e0233c6d8a80f877a7b493d746cd3a46c82b42ab",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 6689,
+    "header_final_byte": "00",
+    "record_length": 499,
+    "record_count": 1374,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "536c7307",
+    "compressed_consumed": 55403,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 685627,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "be1d02da",
+      "descriptors": "9d703c1a",
+      "header": "6375e03c",
+      "header_without_final_byte": "7ce6953b",
+      "header_normalized_to_0D": "1dc49c81",
+      "compressed_to_EOF": "478db1f5",
+      "compressed_consumed": "478db1f5",
+      "compressed_consumed_without_DCL_header": "a885bb34",
+      "trailer": "00000000",
+      "decoded_all": "f53d4b15",
+      "decoded_declared_records": "3de5326b",
+      "decoded_without_final_1A": "3de5326b",
+      "decoded_with_forced_final_1A": "f53d4b15",
+      "raw_header_plus_decoded_all": "07736c53",
+      "raw_header_plus_declared_records": "11c23a38",
+      "raw_header_plus_decoded_without_final_1A": "11c23a38",
+      "raw_header_plus_decoded_with_forced_final_1A": "07736c53",
+      "normalized_header_plus_decoded_all": "20328f51",
+      "normalized_header_plus_declared_records": "52609249",
+      "omitted_header_final_byte_plus_decoded_all": "1ee79091",
+      "raw_header_plus_compressed_to_EOF": "386b0eb9",
+      "header_plus_zero_field_plus_compressed_to_EOF": "09054173",
+      "stored_field_plus_compressed_to_EOF": "57dca414",
+      "whole_DBC_including_stored_field": "8082c27b"
+    },
+    "field_count": 208,
+    "field_types": {
+      "C": 153,
+      "N": 55
+    },
+    "decimals_by_type": {
+      "C": [
+        0
+      ],
+      "N": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 208,
+    "sum_width_plus_flag": 499,
+    "declared_record_bytes": 685626,
+    "complete_declared_records": 1374,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 1374
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "C": {
+        "first_NUL": 0,
+        "first_space": 31447,
+        "last_NUL": 0,
+        "last_space": 32526
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 75570,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  },
+  {
+    "file": "sids.dbc",
+    "size": 5354,
+    "sha256": "02dde5d3654a5efd095f87788aa3a67841a5adc5f155ed68e3b3941351e69935",
+    "version": "03",
+    "language_driver": "57",
+    "header_length": 481,
+    "header_final_byte": "0d",
+    "record_length": 168,
+    "record_count": 100,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "7406fc02",
+    "compressed_consumed": 4869,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 16801,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_with_forced_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "598b5e6c",
+      "descriptors": "cddb95c4",
+      "header": "1d000cb4",
+      "header_without_final_byte": "b876a03b",
+      "header_normalized_to_0D": "1d000cb4",
+      "compressed_to_EOF": "59b7a0ce",
+      "compressed_consumed": "59b7a0ce",
+      "compressed_consumed_without_DCL_header": "1cee65cc",
+      "trailer": "00000000",
+      "decoded_all": "def1334e",
+      "decoded_declared_records": "45c7fbd1",
+      "decoded_without_final_1A": "45c7fbd1",
+      "decoded_with_forced_final_1A": "def1334e",
+      "raw_header_plus_decoded_all": "02fc0674",
+      "raw_header_plus_declared_records": "9eff0eff",
+      "raw_header_plus_decoded_without_final_1A": "9eff0eff",
+      "raw_header_plus_decoded_with_forced_final_1A": "02fc0674",
+      "normalized_header_plus_decoded_all": "02fc0674",
+      "normalized_header_plus_declared_records": "9eff0eff",
+      "omitted_header_final_byte_plus_decoded_all": "53480933",
+      "raw_header_plus_compressed_to_EOF": "87ae64ce",
+      "header_plus_zero_field_plus_compressed_to_EOF": "fac3d789",
+      "stored_field_plus_compressed_to_EOF": "7b5c35a2",
+      "whole_DBC_including_stored_field": "17915df5"
+    },
+    "field_count": 14,
+    "field_types": {
+      "N": 12,
+      "C": 2
+    },
+    "decimals_by_type": {
+      "N": [
+        0,
+        3,
+        6
+      ],
+      "C": [
+        0
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 14,
+    "sum_width_plus_flag": 168,
+    "declared_record_bytes": 16800,
+    "complete_declared_records": 100,
+    "output_minus_declared_bytes": 1,
+    "eof_marker": true,
+    "extra_prefix_hex": "1a",
+    "record_flags": {
+      "20": 100
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "N": {
+        "first_NUL": 0,
+        "first_space": 1100,
+        "last_NUL": 0,
+        "last_space": 0
+      },
+      "C": {
+        "first_NUL": 0,
+        "first_space": 0,
+        "last_NUL": 0,
+        "last_space": 100
+      }
+    }
+  },
+  {
+    "file": "storm.dbc",
+    "size": 1443,
+    "sha256": "ca7a1d5b36b7b426e752ae80267c993575d1a127207e2a206dc1416abf8ff9a9",
+    "version": "03",
+    "language_driver": "00",
+    "header_length": 225,
+    "header_final_byte": "0d",
+    "record_length": 71,
+    "record_count": 100,
+    "literal_mode": 0,
+    "dictionary_code": 6,
+    "dictionary_bytes": 4096,
+    "stored_raw_hex": "41ab526a",
+    "compressed_consumed": 1214,
+    "unused_compressed_bytes": 0,
+    "decoded_length": 7100,
+    "no_skip_blast_status": -1,
+    "no_skip_output_length": 0,
+    "stripped_skip_blast_status": -1,
+    "crc_matches": [
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_declared_records",
+      "IEEE init=ffffffff xorout=ffffffff little raw_header_plus_decoded_without_final_1A",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_decoded_all",
+      "IEEE init=ffffffff xorout=ffffffff little normalized_header_plus_declared_records"
+    ],
+    "length_matches": [],
+    "ieee_crc32": {
+      "fixed_header": "d3d4fe39",
+      "descriptors": "b7045cf9",
+      "header": "16487921",
+      "header_without_final_byte": "2bdc14f4",
+      "header_normalized_to_0D": "16487921",
+      "compressed_to_EOF": "09695d2b",
+      "compressed_consumed": "09695d2b",
+      "compressed_consumed_without_DCL_header": "1814e5c5",
+      "trailer": "00000000",
+      "decoded_all": "14524c54",
+      "decoded_declared_records": "14524c54",
+      "decoded_without_final_1A": "14524c54",
+      "decoded_with_forced_final_1A": "4372d156",
+      "raw_header_plus_decoded_all": "6a52ab41",
+      "raw_header_plus_declared_records": "6a52ab41",
+      "raw_header_plus_decoded_without_final_1A": "6a52ab41",
+      "raw_header_plus_decoded_with_forced_final_1A": "2ed1355a",
+      "normalized_header_plus_decoded_all": "6a52ab41",
+      "normalized_header_plus_declared_records": "6a52ab41",
+      "omitted_header_final_byte_plus_decoded_all": "53731cb0",
+      "raw_header_plus_compressed_to_EOF": "b8b20e9a",
+      "header_plus_zero_field_plus_compressed_to_EOF": "e7ed7f11",
+      "stored_field_plus_compressed_to_EOF": "f3150446",
+      "whole_DBC_including_stored_field": "e68b229e"
+    },
+    "field_count": 6,
+    "field_types": {
+      "D": 1,
+      "C": 3,
+      "N": 2
+    },
+    "decimals_by_type": {
+      "D": [
+        0
+      ],
+      "C": [
+        0
+      ],
+      "N": [
+        13,
+        14
+      ]
+    },
+    "nonzero_field_address_count": 0,
+    "nonzero_descriptor_tail_count": 0,
+    "nul_in_field_name_count": 6,
+    "sum_width_plus_flag": 71,
+    "declared_record_bytes": 7100,
+    "complete_declared_records": 100,
+    "output_minus_declared_bytes": 0,
+    "eof_marker": false,
+    "extra_prefix_hex": "",
+    "record_flags": {
+      "20": 100
+    },
+    "record_area_nul_count": 0,
+    "field_edge_counts": {
+      "D": {
+        "first_NUL": 0,
+        "first_space": 0,
+        "last_NUL": 0,
+        "last_space": 0
+      },
+      "C": {
+        "first_NUL": 0,
+        "first_space": 0,
+        "last_NUL": 0,
+        "last_space": 270
+      },
+      "N": {
+        "first_NUL": 0,
+        "first_space": 200,
+        "last_NUL": 0,
+        "last_space": 0
+      }
+    }
+  }
+]

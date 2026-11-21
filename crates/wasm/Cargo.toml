@@ -1,0 +1,12 @@
+[package]
+name = "read_dbc_wasm"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+name = "read_dbc"
+crate-type = ["staticlib"]
+
+[dependencies]
+duckdb-neo.workspace = true
+read_dbc_core.workspace = true

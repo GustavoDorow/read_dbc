@@ -1,0 +1,11 @@
+[package]
+name = "read_dbc"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+duckdb-neo.workspace = true
+read_dbc_core.workspace = true
