@@ -30,12 +30,6 @@ pub enum Error {
     RecordLengthMismatch { declared: u16, computed: u64 },
     /// The header declares no fields.
     NoFields,
-    /// A field cannot be mapped to a column type (unless `all_varchar`).
-    UnsupportedField {
-        field: String,
-        field_type: char,
-        reason: String,
-    },
     /// An invalid reader option (type override, projection, ...).
     InvalidOption(String),
     /// The compressed stream is invalid (blast error). `offset` is the file
@@ -116,13 +110,6 @@ impl fmt::Display for Error {
                 "invalid DBF header: record length is {declared} but the fields add up to {computed} (including the deletion flag)"
             ),
             Error::NoFields => f.write_str("invalid DBF header: no field descriptors"),
-            Error::UnsupportedField {
-                field,
-                field_type,
-                reason,
-            } => {
-                write!(f, "field {field:?} (type '{field_type}'): {reason}")
-            }
             Error::InvalidOption(msg) => f.write_str(msg),
             Error::Dcl { error, offset } => {
                 write!(

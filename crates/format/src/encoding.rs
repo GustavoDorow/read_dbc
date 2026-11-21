@@ -2,7 +2,7 @@
 
 use std::fmt;
 
-use crate::codepages::{CP437_HIGH, CP850_HIGH, CP1252_HIGH};
+use crate::codepages::{CP437_HIGH, CP850_HIGH, CP860_HIGH, CP1252_HIGH};
 
 /// Character encoding of text fields.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
@@ -17,6 +17,8 @@ pub enum Encoding {
     Cp437,
     /// IBM PC code page 850 (multilingual MS-DOS). DATASUS SIH files use it.
     Cp850,
+    /// IBM PC code page 860 (Portuguese MS-DOS).
+    Cp860,
     /// Windows-1252. The five undefined bytes (0x81, 0x8D, 0x8F, 0x90, 0x9D)
     /// map to the C1 control of the same value, like the WHATWG decoder, so
     /// decoding never fails and is lossless.
@@ -32,17 +34,22 @@ impl Encoding {
     ///
     /// * CP437: 0x01, 0x09, 0x0B, 0x0D, 0x0F, 0x11, 0x15, 0x18, 0x19, 0x1B
     /// * CP850: 0x02, 0x0A, 0x0E, 0x10, 0x12, 0x14, 0x16, 0x1A, 0x1D, 0x25, 0x37
+    /// * CP860: 0x24 (dbfread: `('cp860', 'Portuguese OEM')`)
     /// * CP1252: 0x03, 0x57, 0x58, 0x59
     ///
-    /// Everything else (including 0x00, and IDs for code pages that are not
-    /// implemented, such as 0x24 = CP860) resolves to Latin-1, which never
-    /// fails and preserves the bytes.
+    /// **Everything else falls back to Latin-1**: 0x00 ("no driver", the
+    /// most common value in DATASUS files), unknown IDs, and IDs of code
+    /// pages this crate does not implement (e.g. 0x26 = CP866, 0x4D = CP936,
+    /// 0xC8 = CP1250). Latin-1 never fails and maps each byte to the code
+    /// point of the same value, so the original bytes stay recoverable; pass
+    /// an explicit encoding when the LDID is known to be wrong or missing.
     pub fn from_ldid(ldid: u8) -> Encoding {
         match ldid {
             0x01 | 0x09 | 0x0B | 0x0D | 0x0F | 0x11 | 0x15 | 0x18 | 0x19 | 0x1B => Encoding::Cp437,
             0x02 | 0x0A | 0x0E | 0x10 | 0x12 | 0x14 | 0x16 | 0x1A | 0x1D | 0x25 | 0x37 => {
                 Encoding::Cp850
             }
+            0x24 => Encoding::Cp860,
             0x03 | 0x57..=0x59 => Encoding::Cp1252,
             _ => Encoding::Latin1,
         }
@@ -63,6 +70,7 @@ impl Encoding {
             Encoding::Latin1 => "latin1",
             Encoding::Cp437 => "cp437",
             Encoding::Cp850 => "cp850",
+            Encoding::Cp860 => "cp860",
             Encoding::Cp1252 => "cp1252",
             Encoding::Utf8 => "utf8",
         }
@@ -82,6 +90,7 @@ impl Encoding {
             "latin1" | "iso88591" | "l1" => Encoding::Latin1,
             "cp437" | "ibm437" | "437" => Encoding::Cp437,
             "cp850" | "ibm850" | "850" => Encoding::Cp850,
+            "cp860" | "ibm860" | "860" => Encoding::Cp860,
             "cp1252" | "windows1252" | "1252" => Encoding::Cp1252,
             "utf8" => Encoding::Utf8,
             _ => return None,
@@ -92,6 +101,7 @@ impl Encoding {
         match self {
             Encoding::Cp437 => Some(&CP437_HIGH),
             Encoding::Cp850 => Some(&CP850_HIGH),
+            Encoding::Cp860 => Some(&CP860_HIGH),
             Encoding::Cp1252 => Some(&CP1252_HIGH),
             _ => None,
         }
@@ -173,6 +183,12 @@ mod tests {
         assert_eq!(dec(Encoding::Cp850, b"AN\xa0LISE"), "ANáLISE");
         assert_eq!(dec(Encoding::Cp437, &[0x80, 0x9E, 0xE1]), "Ç₧ß");
         assert_eq!(dec(Encoding::Cp1252, &[0x80]), "€");
+        // CP860: bytes from Python's `"ANÁLISE ... Nº".encode("cp860")`.
+        assert_eq!(dec(Encoding::Cp860, b"AN\x86LISE"), "ANÁLISE");
+        assert_eq!(dec(Encoding::Cp860, b"CIR\x96RGICA"), "CIRÚRGICA");
+        assert_eq!(dec(Encoding::Cp860, b"INFORMA\x80\x8eO"), "INFORMAÇÃO");
+        assert_eq!(dec(Encoding::Cp860, b"N\xa7"), "Nº");
+        assert_eq!(dec(Encoding::Cp860, &[0x84, 0x94, 0x8F, 0x99]), "ãõÂÕ");
         assert_eq!(
             dec(Encoding::Cp1252, &[0x81, 0x8D, 0x8F, 0x90, 0x9D]),
             "\u{81}\u{8D}\u{8F}\u{90}\u{9D}"
@@ -188,6 +204,7 @@ mod tests {
             Encoding::Latin1,
             Encoding::Cp437,
             Encoding::Cp850,
+            Encoding::Cp860,
             Encoding::Cp1252,
         ] {
             for b in 0..=255u8 {
@@ -221,6 +238,12 @@ mod tests {
         assert_eq!(Encoding::from_ldid(0x57), Encoding::Cp1252);
         assert_eq!(Encoding::from_ldid(0x00), Encoding::Latin1);
         assert_eq!(Encoding::from_ldid(0x35), Encoding::Latin1);
+        assert_eq!(Encoding::from_ldid(0x24), Encoding::Cp860);
+        assert_eq!(Encoding::from_ldid(0x26), Encoding::Latin1);
+        assert_eq!(Encoding::from_ldid(0xFF), Encoding::Latin1);
+        assert_eq!(Encoding::from_name("CP860"), Some(Encoding::Cp860));
+        assert_eq!(Encoding::from_name("ibm-860"), Some(Encoding::Cp860));
+        assert_eq!(Encoding::Cp860.name(), "cp860");
         assert_eq!(Encoding::Auto.resolve(0x02), Encoding::Cp850);
         assert_eq!(Encoding::Utf8.resolve(0x02), Encoding::Utf8);
         assert_eq!(Encoding::from_name("ISO-8859-1"), Some(Encoding::Latin1));

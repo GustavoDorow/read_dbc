@@ -155,10 +155,12 @@ pub fn parse_date_field(raw: &[u8]) -> Option<i32> {
 }
 
 /// A `C` field read as a date (type override): trailing spaces/NULs are
-/// stripped; empty → `Ok(None)`; otherwise it must be a valid `YYYYMMDD`.
+/// stripped; empty or exactly `00000000` (the usual "no date" filler in
+/// DATASUS files) → `Ok(None)`; otherwise it must be a valid `YYYYMMDD`
+/// (anything else, e.g. `20230230` or `0000000`, is an error).
 pub fn parse_text_date(raw: &[u8]) -> Result<Option<i32>, &'static str> {
     let t = trim_text(raw);
-    if t.is_empty() {
+    if t.is_empty() || t == b"00000000" {
         return Ok(None);
     }
     parse_yyyymmdd(t)
@@ -268,7 +270,12 @@ mod tests {
             parse_text_date(b"2024010 "),
             Err("not a valid YYYYMMDD date")
         );
-        assert!(parse_text_date(b"00000000").is_err());
+        assert_eq!(parse_text_date(b"00000000"), Ok(None));
+        assert_eq!(parse_text_date(b"00000000  \0"), Ok(None));
+        assert!(parse_text_date(b" 00000000").is_err());
+        assert!(parse_text_date(b"0000000").is_err());
+        assert!(parse_text_date(b"20230230").is_err());
+        assert!(parse_text_date(b"00000101").is_err());
         assert!(parse_text_date(b" 2024010").is_err());
     }
 

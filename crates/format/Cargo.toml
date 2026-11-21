@@ -9,6 +9,16 @@ license = "MIT"
 # implemented here.
 [dependencies]
 
+[features]
+# Test tooling only: a minimal DBF/DBC writer (`read_dbc_format::writer`)
+# used to generate the committed fixtures in test/fixtures/. Never needed
+# to read files.
+writer = []
+
+[[example]]
+name = "make_fixtures"
+required-features = ["writer"]
+
 [dev-dependencies]
 datasus-core = "=0.1.0"
 flate2 = "1"

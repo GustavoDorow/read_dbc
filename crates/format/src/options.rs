@@ -9,8 +9,9 @@ pub struct ReadOptions {
     /// Text encoding. Default [`Encoding::Auto`] (from the LDID byte).
     pub encoding: Encoding,
     /// Read every field as text (C rules: trailing spaces/NULs stripped,
-    /// everything else preserved). Also allows field types that have no
-    /// typed mapping. Per-field [`types`](Self::types) still apply on top.
+    /// everything else preserved). Per-field [`types`](Self::types) still
+    /// apply on top. Columns chosen this way have no
+    /// [`Column::fallback`](crate::Column::fallback).
     pub all_varchar: bool,
     /// Yield deleted (`'*'`) records too; the sink's
     /// [`BatchSink::deleted`](crate::BatchSink::deleted) receives the flag.
@@ -20,7 +21,8 @@ pub struct ReadOptions {
     pub verify_crc: bool,
     /// Per-field type overrides: `(field name, type)`, the name matched
     /// ASCII case-insensitively. Supported: any field → `Varchar`;
-    /// `C` → `Date` (strict `YYYYMMDD`) and `C` → `BigInt` (strict integer);
+    /// `C` → `Date` (strict `YYYYMMDD`; blank or `00000000` → NULL) and
+    /// `C` → `BigInt` (strict integer);
     /// and any field → its natural type.
     pub types: Vec<(String, ColumnType)>,
 }

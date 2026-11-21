@@ -259,40 +259,122 @@ fn all_varchar() {
 }
 
 #[test]
-fn unsupported_types() {
-    let fields = [("MEMO", b'M', 10, 0), ("X", b'C', 1, 0)];
-    let dbf = build_dbf(&fields, &[rec(b' ', &[b"         1", b"a"])], 0, false);
-    let e = both(&dbf, ReadOptions::default()).unwrap_err();
-    assert!(
-        matches!(&e, Error::UnsupportedField { field, field_type: 'M', .. } if field == "MEMO"),
-        "{e:?}"
-    );
-    let (_, buf) = both(
-        &dbf,
-        ReadOptions {
+fn fallback_to_varchar() {
+    use read_dbc_format::{FallbackReason as FR, Header, resolve_schema};
+    // (field spec, raw value, expected fallback)
+    let mut cases: Vec<(FieldSpec, Vec<u8>, FR)> = Vec::new();
+    for &ty in b"MBGIT@Y0PV?" {
+        cases.push((("X", ty, 4, 0), b"\x01ab ".to_vec(), FR::UnsupportedType));
+    }
+    cases.push((("X", b'D', 6, 0), b"202401".to_vec(), FR::DateWidth));
+    cases.push((("X", b'D', 10, 0), b"2024-01-01".to_vec(), FR::DateWidth));
+    cases.push((("X", b'N', 39, 0), [b' '; 39].to_vec(), FR::NumericTooWide));
+    cases.push((("X", b'F', 40, 2), [b'9'; 40].to_vec(), FR::NumericTooWide));
+    cases.push((
+        ("X", b'N', 4, 9),
+        b"12.3".to_vec(),
+        FR::DecimalsNotBelowWidth,
+    ));
+    cases.push((
+        ("X", b'N', 4, 4),
+        b"  .5".to_vec(),
+        FR::DecimalsNotBelowWidth,
+    ));
+    cases.push((
+        ("X", b'F', 3, 200),
+        b"abc".to_vec(),
+        FR::DecimalsNotBelowWidth,
+    ));
+    for (spec, raw, reason) in cases {
+        let fields = [("ID", b'N', 2, 0), spec, ("Z", b'C', 2, 0)];
+        let mut blank = vec![b' '; spec.2 as usize];
+        blank[0] = 0;
+        let dbf = build_dbf(
+            &fields,
+            &[
+                rec(b' ', &[b" 1", &raw, b"ok"]),
+                rec(b' ', &[b" 2", &blank, b"  "]),
+            ],
+            0x02,
+            false,
+        );
+        let ctx = format!("{} {:?}", spec.1 as char, spec);
+        let (header, _) = Header::read(&mut &dbf[..], Encoding::Auto).unwrap();
+        let cols = resolve_schema(&header, &ReadOptions::default()).unwrap();
+        assert_eq!(cols[1].column_type, ColumnType::Varchar, "{ctx}");
+        assert_eq!(cols[1].fallback, Some(reason), "{ctx}");
+        assert_eq!(cols[0].fallback, None);
+        assert_eq!(cols[2].fallback, None);
+        let (types, buf) = both(&dbf, ReadOptions::default()).unwrap();
+        assert_eq!(types[0], ColumnType::BigInt);
+        // C rules: raw bytes, trailing spaces/NULs stripped, file encoding.
+        let mut s = String::new();
+        let expect = Encoding::Cp850
+            .decode(read_dbc_format::values::trim_text(&raw), &mut s)
+            .unwrap()
+            .to_owned();
+        assert_eq!(buf.columns[1], vec![t(&expect), t("")], "{ctx}");
+        // all_varchar and a VARCHAR override are the caller's choice: no
+        // fallback reported.
+        let opts = ReadOptions {
             all_varchar: true,
             ..Default::default()
-        },
-    )
-    .unwrap();
-    assert_eq!(buf.columns[0], vec![t("         1")]);
+        };
+        let cols = resolve_schema(&header, &opts).unwrap();
+        assert!(cols.iter().all(|c| c.fallback.is_none()));
+        let opts = ReadOptions {
+            types: vec![("X".into(), ColumnType::Varchar)],
+            ..Default::default()
+        };
+        assert_eq!(resolve_schema(&header, &opts).unwrap()[1].fallback, None);
+        // A typed override of a fallback field is rejected.
+        let opts = ReadOptions {
+            types: vec![("X".into(), ColumnType::BigInt)],
+            ..Default::default()
+        };
+        assert!(matches!(
+            resolve_schema(&header, &opts),
+            Err(Error::InvalidOption(_))
+        ));
+    }
+    assert_eq!(
+        FR::DecimalsNotBelowWidth.to_string(),
+        "numeric field decimal count is not smaller than its width"
+    );
 
-    let wide = [("W", b'N', 40, 0)];
-    let dbf = build_dbf(&wide, &[rec(b' ', &[&[b' '; 40]])], 0, false);
+    // Edges that keep their natural type.
+    for (spec, ty) in [
+        (
+            ("X", b'N', 38, 37),
+            ColumnType::Decimal {
+                width: 38,
+                scale: 37,
+            },
+        ),
+        (
+            ("X", b'N', 38, 0),
+            ColumnType::Decimal {
+                width: 38,
+                scale: 0,
+            },
+        ),
+        (
+            ("X", b'N', 2, 1),
+            ColumnType::Decimal { width: 2, scale: 1 },
+        ),
+        (("X", b'D', 8, 0), ColumnType::Date),
+    ] {
+        let dbf = build_dbf(&[spec], &[], 0, false);
+        let (types, _) = both(&dbf, ReadOptions::default()).unwrap();
+        assert_eq!(types, vec![ty], "{spec:?}");
+    }
+
+    // A zero-width field is still a hard error.
+    let dbf = build_dbf(&[("X", b'M', 0, 0)], &[], 0, false);
     assert!(matches!(
         both(&dbf, ReadOptions::default()),
-        Err(Error::UnsupportedField { .. })
+        Err(Error::InvalidHeader { .. })
     ));
-    assert!(
-        both(
-            &dbf,
-            ReadOptions {
-                all_varchar: true,
-                ..Default::default()
-            }
-        )
-        .is_ok()
-    );
 }
 
 #[test]
@@ -306,6 +388,7 @@ fn type_overrides() {
     let recs = vec![
         rec(b' ', &[b"19250818", b"042", b"  1.50", b"ab"]),
         rec(b' ', &[b"        ", b"   ", b"      ", b"  "]),
+        rec(b' ', &[b"00000000", b"007", b"  2.00", b"cd"]),
     ];
     let dbf = build_dbf(&fields, &recs, 0, false);
     let opts = ReadOptions {
@@ -327,9 +410,10 @@ fn type_overrides() {
             ColumnType::Varchar
         ]
     );
-    assert_eq!(buf.columns[0], vec![V::Date(-16_207), V::Null]);
-    assert_eq!(buf.columns[1], vec![V::BigInt(42), V::Null]);
-    assert_eq!(buf.columns[2], vec![t("  1.50"), t("")]);
+    // "00000000" is NULL, like blank.
+    assert_eq!(buf.columns[0], vec![V::Date(-16_207), V::Null, V::Null]);
+    assert_eq!(buf.columns[1], vec![V::BigInt(42), V::Null, V::BigInt(7)]);
+    assert_eq!(buf.columns[2], vec![t("  1.50"), t(""), t("  2.00")]);
 
     // Overrides win over all_varchar.
     let (types, _) = both(
@@ -362,6 +446,23 @@ fn type_overrides() {
         matches!(&e, Error::InvalidValue { field, raw, .. } if field == "NASC" && raw == b"20241301"),
         "{e:?}"
     );
+    // Any other invalid date (not the all-zero filler) stays an error.
+    for bad_date in [&b"20230230"[..], b"0000000 ", b"00000101", b"2023023X"] {
+        let bad = build_dbf(
+            &fields,
+            &[rec(b' ', &[bad_date, b"1  ", b"  1.00", b"  "])],
+            0,
+            false,
+        );
+        let e = both(
+            &bad,
+            ReadOptions {
+                types: vec![("NASC".into(), ColumnType::Date)],
+                ..Default::default()
+            },
+        );
+        assert!(matches!(e, Err(Error::InvalidValue { .. })), "{bad_date:?}");
+    }
     let e = both(
         &bad,
         ReadOptions {

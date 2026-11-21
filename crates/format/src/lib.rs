@@ -47,6 +47,13 @@
 //!   no bytes follow it (never observed in DATASUS files);
 //! * the CRC-32 (unless [`ReadOptions::verify_crc`] is off).
 //!
+//! Deliberately *not* checked: the unused high bits of the last DCL byte,
+//! after the end code. They carry no data, encoders leave arbitrary values
+//! there, and the CRC covers the decoded data anyway. Plain `.dbf` input,
+//! which has no CRC, is held to the same end rule: after the `N` records
+//! only a single 0x1A may follow, and any other trailing byte is an error
+//! ([`Error::ExcessData`]) rather than being ignored.
+//!
 //! **The CRC can only be known at the end of the stream, so the end checks
 //! run as part of reading the last declared record**: the call that would
 //! hand out the last record (in [`DbcReader::read_batch`],
@@ -70,13 +77,18 @@
 //! * `N`/`F` without decimals, width ≤ 18 → BIGINT; width 19–38 →
 //!   DECIMAL(width, 0). With decimals → DECIMAL(width, decimals), parsed
 //!   exactly (no floating point). Blank → NULL; anything else that is not a
-//!   plain decimal number is an error. Width > 38 is an error at open.
-//! * `D` → DATE from `YYYYMMDD`; blank, all-zero or invalid → NULL.
+//!   plain decimal number is an error.
+//! * `D` (width 8) → DATE from `YYYYMMDD`; blank, all-zero or invalid → NULL.
 //! * `L` → BOOLEAN (`TtYy`/`FfNn`, `?`/blank → NULL).
-//! * Other types are an error at open unless [`ReadOptions::all_varchar`].
+//! * **Fallback to VARCHAR** (with the `C` rules) for everything else:
+//!   types with no typed mapping (`M`, `B`, `G`, `I`, `T`, `@`, `0`, ...),
+//!   `D` with width ≠ 8, and `N`/`F` wider than 38 or with decimals ≥
+//!   width. [`Column::fallback`] says why, so callers can warn. A field's
+//!   type never makes opening fail; a zero width and header structure
+//!   problems do.
 //!
 //! Per-field overrides ([`ReadOptions::types`]): any field → VARCHAR,
-//! `C` → DATE (strict `YYYYMMDD`, blank → NULL), `C` → BIGINT.
+//! `C` → DATE (strict `YYYYMMDD`; blank or `00000000` → NULL), `C` → BIGINT.
 //!
 //! # Schema without reading data
 //!
@@ -112,6 +124,8 @@ mod options;
 mod reader;
 mod schema;
 pub mod values;
+#[cfg(feature = "writer")]
+pub mod writer;
 
 pub use crc32::{Crc32, crc32};
 pub use dcl::{BlastError, DclError, DclReader};
@@ -123,7 +137,7 @@ pub use reader::{
     BatchSink, ColumnBuffers, CrcStatus, DbcReader, Format, MIN_RECORDS_PER_BATCH, OwnedValue,
     Progress, RawRecord, Summary, Value,
 };
-pub use schema::{Column, ColumnType, resolve_schema};
+pub use schema::{Column, ColumnType, FallbackReason, resolve_schema};
 
 /// Version of this crate, as declared in `Cargo.toml`.
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");

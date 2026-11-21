@@ -60,6 +60,48 @@ impl fmt::Display for ColumnType {
     }
 }
 
+/// Why a field could not get its natural type and is read as VARCHAR
+/// instead (see [`Column::fallback`]).
+///
+/// A fallback column uses the `C` rules: the raw bytes with trailing spaces
+/// and NULs stripped, decoded with the file's encoding. Opening never fails
+/// because of a field's type or geometry; only a zero width and header
+/// structure problems are errors.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[non_exhaustive]
+pub enum FallbackReason {
+    /// The type byte has no typed mapping (`M`, `B`, `G`, `I`, `T`, `@`,
+    /// `Y`, `0`, ... or an unknown byte).
+    UnsupportedType,
+    /// A `D` field whose width is not 8.
+    DateWidth,
+    /// An `N`/`F` field wider than 38 digits (DECIMAL's maximum precision).
+    NumericTooWide,
+    /// An `N`/`F` field whose decimal count is not smaller than its width
+    /// (e.g. `N(4,9)`).
+    DecimalsNotBelowWidth,
+}
+
+impl FallbackReason {
+    /// A short English description (`"unsupported field type"`, ...).
+    pub fn description(self) -> &'static str {
+        match self {
+            FallbackReason::UnsupportedType => "unsupported field type",
+            FallbackReason::DateWidth => "date field width is not 8",
+            FallbackReason::NumericTooWide => "numeric field wider than 38 digits",
+            FallbackReason::DecimalsNotBelowWidth => {
+                "numeric field decimal count is not smaller than its width"
+            }
+        }
+    }
+}
+
+impl fmt::Display for FallbackReason {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.write_str(self.description())
+    }
+}
+
 /// How a field's bytes are turned into a value.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub(crate) enum Decoder {
@@ -88,22 +130,26 @@ pub struct Column {
     pub field_index: usize,
     /// The output type.
     pub column_type: ColumnType,
+    /// `Some` when the field's natural type could not be used and the column
+    /// was read as VARCHAR instead, with the reason. `None` for typed
+    /// columns, and whenever the type was chosen by the caller
+    /// ([`ReadOptions::all_varchar`] or a [`ReadOptions::types`] override).
+    pub fallback: Option<FallbackReason>,
     pub(crate) decoder: Decoder,
 }
 
-fn natural(field: &Field) -> std::result::Result<(ColumnType, Decoder), String> {
+/// The natural mapping of a field, or the reason it falls back to VARCHAR.
+fn natural(field: &Field) -> std::result::Result<(ColumnType, Decoder), FallbackReason> {
     let len = field.length;
     let dec = field.decimals;
     match field.field_type {
         b'C' => Ok((ColumnType::Varchar, Decoder::Text)),
         b'N' | b'F' => {
             if len > 38 {
-                return Err(format!(
-                    "numeric width {len} exceeds 38 digits (use all_varchar)"
-                ));
+                return Err(FallbackReason::NumericTooWide);
             }
-            if dec as usize > len {
-                return Err(format!("decimal count {dec} exceeds the width {len}"));
+            if dec as usize >= len {
+                return Err(FallbackReason::DecimalsNotBelowWidth);
             }
             if dec == 0 && len <= 18 {
                 Ok((ColumnType::BigInt, Decoder::Int64))
@@ -115,14 +161,10 @@ fn natural(field: &Field) -> std::result::Result<(ColumnType, Decoder), String> 
                 ))
             }
         }
-        b'D' => {
-            if len != 8 {
-                return Err(format!("date field has width {len} (expected 8)"));
-            }
-            Ok((ColumnType::Date, Decoder::DateField))
-        }
+        b'D' if len == 8 => Ok((ColumnType::Date, Decoder::DateField)),
+        b'D' => Err(FallbackReason::DateWidth),
         b'L' => Ok((ColumnType::Boolean, Decoder::Logical)),
-        _ => Err("unsupported field type (use all_varchar to read it as text)".into()),
+        _ => Err(FallbackReason::UnsupportedType),
     }
 }
 
@@ -144,9 +186,10 @@ fn override_decoder(field: &Field, to: ColumnType) -> Option<Decoder> {
 ///
 /// This is exactly what [`DbcReader`](crate::DbcReader) uses, so a planner
 /// can call [`Header::read`] and then this function to declare the columns
-/// without reading (or decompressing) any record data. Fails with
-/// [`Error::UnsupportedField`] or [`Error::InvalidOption`] on the same
-/// inputs that make [`DbcReader::new`](crate::DbcReader::new) fail.
+/// without reading (or decompressing) any record data. Fails only with
+/// [`Error::InvalidOption`] (a bad type override), on the same inputs that
+/// make [`DbcReader::new`](crate::DbcReader::new) fail. Fields without a
+/// usable natural type become VARCHAR with [`Column::fallback`] set.
 pub fn resolve_schema(header: &Header, options: &ReadOptions) -> Result<Vec<Column>> {
     let mut overrides: Vec<Option<ColumnType>> = vec![None; header.fields.len()];
     for (name, to) in &options.types {
@@ -183,6 +226,7 @@ pub fn resolve_schema(header: &Header, options: &ReadOptions) -> Result<Vec<Colu
         .iter()
         .enumerate()
         .map(|(i, field)| {
+            let mut fallback = None;
             let (column_type, decoder) = if let Some(to) = overrides[i] {
                 let d = override_decoder(field, to).ok_or_else(|| {
                     Error::InvalidOption(format!(
@@ -197,16 +241,16 @@ pub fn resolve_schema(header: &Header, options: &ReadOptions) -> Result<Vec<Colu
             } else if options.all_varchar {
                 (ColumnType::Varchar, Decoder::Text)
             } else {
-                natural(field).map_err(|reason| Error::UnsupportedField {
-                    field: field.name.clone(),
-                    field_type: field.type_char(),
-                    reason,
-                })?
+                natural(field).unwrap_or_else(|reason| {
+                    fallback = Some(reason);
+                    (ColumnType::Varchar, Decoder::Text)
+                })
             };
             Ok(Column {
                 name: field.name.clone(),
                 field_index: i,
                 column_type,
+                fallback,
                 decoder,
             })
         })

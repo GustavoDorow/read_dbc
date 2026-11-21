@@ -494,6 +494,9 @@ impl<R: Read> DclReader<R> {
     /// Verify that nothing but the unused high bits of the last byte
     /// follows the end code. Must be called after a read returned `Ok(0)`;
     /// before that it returns an error describing the unfinished stream.
+    ///
+    /// The values of those unused padding bits are intentionally not
+    /// checked: they carry no data and encoders leave arbitrary values.
     pub fn check_end(&mut self) -> Result<(), DclError> {
         if !self.is_finished() {
             return Err(self.sticky_error().unwrap_or(DclError::Blast {
