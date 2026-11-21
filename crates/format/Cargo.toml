@@ -1,6 +1,15 @@
 [package]
 name = "read_dbc_format"
+description = "Streaming, dependency-free reader for DATASUS .dbc files (PKWare DCL + dBase III)"
 version.workspace = true
 edition.workspace = true
+license = "MIT"
 
+# No runtime dependencies: CRC-32, the DCL decoder and the code pages are
+# implemented here.
 [dependencies]
+
+[dev-dependencies]
+datasus-core = "=0.1.0"
+flate2 = "1"
+serde_json = "1"

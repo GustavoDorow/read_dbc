@@ -87,6 +87,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "datasus-core"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "bd3133173360551c04ef052207dce786af5a65017f044d626ca5ee389187c936"
+
+[[package]]
 name = "duckdb-loadable-macros"
 version = "1.20001.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -313,6 +319,11 @@ dependencies = [
 [[package]]
 name = "read_dbc_format"
 version = "0.1.0"
+dependencies = [
+ "datasus-core",
+ "flate2",
+ "serde_json",
+]
 
 [[package]]
 name = "read_dbc_wasm"

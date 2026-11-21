@@ -1,0 +1,31 @@
+# cargo-fuzz layout. Not a member of the main workspace (it has its own
+# [workspace] table). Run with: cargo +nightly fuzz run dbc_reader
+[package]
+name = "read_dbc_format-fuzz"
+version = "0.0.0"
+publish = false
+edition = "2024"
+
+[package.metadata]
+cargo-fuzz = true
+
+[dependencies]
+libfuzzer-sys = "0.4"
+read_dbc_format = { path = ".." }
+
+[[bin]]
+name = "dbc_reader"
+path = "fuzz_targets/dbc_reader.rs"
+test = false
+doc = false
+bench = false
+
+[[bin]]
+name = "dcl"
+path = "fuzz_targets/dcl.rs"
+test = false
+doc = false
+bench = false
+
+[workspace]
+members = ["."]
