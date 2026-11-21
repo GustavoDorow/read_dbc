@@ -1,0 +1,33 @@
+# name: test/sql/replacement_scan.test
+# description: FROM 'file.dbc' calls read_dbc
+# group: [read_dbc]
+
+require read_dbc
+
+query I
+SELECT count(*) FROM 'test/fixtures/types.dbc';
+----
+8
+
+query IT
+SELECT * FROM 'test/fixtures/eof_marker.dbc';
+----
+1	A
+2	B
+3	C
+
+# globs too
+query I
+SELECT count(*) FROM 'test/fixtures/*eof_marker.dbc';
+----
+6
+
+query T
+SELECT TXT FROM 'test/fixtures/cp850.dbc' WHERE ID = 3;
+----
+SEM INFORMAÇÃO
+
+# .dbf is left to other extensions
+statement error
+SELECT * FROM 'test/fixtures/plain.dbf';
+----

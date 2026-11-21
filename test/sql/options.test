@@ -1,0 +1,160 @@
+# name: test/sql/options.test
+# description: all_varchar, include_deleted, verify_crc, types (STRUCT and MAP)
+# group: [read_dbc]
+
+require read_dbc
+
+# all_varchar: every field as text (C rules: trailing spaces stripped, leading kept)
+query TTTTTTTT
+SELECT * FROM read_dbc('test/fixtures/types.dbc', all_varchar := true) LIMIT 2;
+----
+0012	         0	        0.00	                   0	                                0.0000	20230115	T	20240229
+ABC	       -42	       -0.50	12345678901234567890	123456789012345678901234567890123.4567	(empty)	F	00000000
+
+query T
+SELECT DISTINCT column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/types.dbc', all_varchar := true));
+----
+VARCHAR
+
+# types override applies on top of all_varchar
+query TT
+SELECT typeof(N10), typeof(DTC) FROM read_dbc('test/fixtures/types.dbc', all_varchar := true, types := {'DTC': 'DATE'}) LIMIT 1;
+----
+VARCHAR	DATE
+
+# include_deleted adds a trailing _deleted BOOLEAN column
+query ITT
+SELECT * FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := true);
+----
+1	ONE	false
+2	TWO	true
+3	THREE	false
+4	FOUR	false
+5	FIVE	true
+
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := true));
+----
+ID	BIGINT
+NAME	VARCHAR
+_deleted	BOOLEAN
+
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := true) WHERE _deleted;
+----
+2
+
+# verify_crc
+statement error
+SELECT * FROM read_dbc('test/fixtures/bad_crc.dbc');
+----
+CRC-32 mismatch
+
+query IT
+SELECT * FROM read_dbc('test/fixtures/bad_crc.dbc', verify_crc := false);
+----
+1	A
+2	B
+3	C
+
+# types as STRUCT: C -> DATE, '00000000' and blank -> NULL; names are case-insensitive
+query T
+SELECT dtc FROM read_dbc('test/fixtures/types.dbc', types := {'dtc': 'date'});
+----
+2024-02-29
+NULL
+NULL
+1999-12-31
+2000-01-01
+1970-01-01
+2024-01-01
+2023-12-31
+
+query T
+SELECT typeof(DTC) FROM read_dbc('test/fixtures/types.dbc', types := {'DTC': 'DATE'}) LIMIT 1;
+----
+DATE
+
+# types as MAP
+query TI
+SELECT DTC, N10 FROM read_dbc('test/fixtures/types.dbc', types := MAP {'DTC': 'DATE', 'N10': 'VARCHAR'}) LIMIT 2;
+----
+2024-02-29	         0
+NULL	       -42
+
+# C -> BIGINT (strict integer), natural type -> itself (incl. DECIMAL(w,s))
+query IT
+SELECT CODE, typeof(CODE) FROM read_dbc('test/fixtures/layout_a.dbc', types := {'CODE': 'BIGINT', 'QTY': 'BIGINT'});
+----
+12345	BIGINT
+1	BIGINT
+
+query T
+SELECT N12 FROM read_dbc('test/fixtures/types.dbc', types := {'N12': 'decimal(12,2)'}) LIMIT 2;
+----
+0.00
+-0.50
+
+statement error
+SELECT TXT FROM read_dbc('test/fixtures/types.dbc', types := {'TXT': 'BIGINT'});
+----
+record 1, field "TXT"
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'N12': 'DECIMAL(14,2)'});
+----
+cannot read field "N12"
+
+# any -> VARCHAR
+query TT
+SELECT FLAG, DT FROM read_dbc('test/fixtures/types.dbc', types := {'FLAG': 'VARCHAR', 'DT': 'TEXT'}) LIMIT 3;
+----
+T	20230115
+F	(empty)
+Y	00000000
+
+# invalid date in a C -> DATE override is an error naming the file, record and field
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'TXT': 'DATE'});
+----
+read_dbc: "test/fixtures/types.dbc": record 0, field "TXT"
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'NOPE': 'DATE'});
+----
+types: column "NOPE" was not found in "test/fixtures/types.dbc"
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'DTC': 'INTEGER'});
+----
+types: unknown type "INTEGER" for column "DTC"
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'N10': 'DATE'});
+----
+cannot read field "N10"
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := MAP {'DTC': 'DATE', 'dtc': 'VARCHAR'});
+----
+types: column "dtc" is listed twice
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := 42);
+----
+types must be a STRUCT or MAP
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/types.dbc', types := {'DTC': NULL});
+----
+types: the type for column "DTC" is NULL
+
+statement error
+SELECT * FROM read_dbc(42);
+----
+the first argument must be a file path or glob
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/does_not_exist.dbc');
+----
+no files found that match the pattern "test/fixtures/does_not_exist.dbc"

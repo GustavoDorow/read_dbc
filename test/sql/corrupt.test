@@ -1,0 +1,57 @@
+# name: test/sql/corrupt.test
+# description: every corrupt fixture fails with an error naming the file
+# group: [read_dbc]
+
+require read_dbc
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/bad_crc.dbc');
+----
+read_dbc: "test/fixtures/bad_crc.dbc": CRC-32 mismatch
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/truncated.dbc');
+----
+read_dbc: "test/fixtures/truncated.dbc": corrupt compressed data
+
+statement error
+SELECT count(*) FROM read_dbc('test/fixtures/truncated.dbc');
+----
+read_dbc: "test/fixtures/truncated.dbc": corrupt compressed data
+
+# header problems are found at bind
+statement error
+DESCRIBE SELECT * FROM read_dbc('test/fixtures/bad_header.dbc');
+----
+read_dbc: "test/fixtures/bad_header.dbc": invalid DBF header: record length is 9 but the fields add up to 8
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/bad_flag.dbc');
+----
+read_dbc: "test/fixtures/bad_flag.dbc": corrupt record 3: deletion flag
+
+statement error
+SELECT count(*) FROM read_dbc('test/fixtures/bad_flag.dbc');
+----
+read_dbc: "test/fixtures/bad_flag.dbc": corrupt record 3: deletion flag
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/trailing_garbage.dbc');
+----
+read_dbc: "test/fixtures/trailing_garbage.dbc": unexpected trailing bytes
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/trailing_garbage.dbc', verify_crc := false);
+----
+read_dbc: "test/fixtures/trailing_garbage.dbc": unexpected trailing bytes
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/bad_number.dbc');
+----
+read_dbc: "test/fixtures/bad_number.dbc": record 3, field "ID" (logical offset 122): not a valid decimal number
+
+# the reader is not usable after an error: the next query starts fresh
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/eof_marker.dbc');
+----
+3

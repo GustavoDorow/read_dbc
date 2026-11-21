@@ -1,0 +1,190 @@
+# name: test/sql/multi_file.test
+# description: globs, file lists, filename, union_by_name, schema mismatch
+# group: [read_dbc]
+
+require read_dbc
+
+# A glob expands through DuckDB's file system; matches are sorted
+query ITT
+SELECT * FROM read_dbc('test/fixtures/*eof_marker.dbc', filename := true);
+----
+1	A	test/fixtures/eof_marker.dbc
+2	B	test/fixtures/eof_marker.dbc
+3	C	test/fixtures/eof_marker.dbc
+1	A	test/fixtures/no_eof_marker.dbc
+2	B	test/fixtures/no_eof_marker.dbc
+3	C	test/fixtures/no_eof_marker.dbc
+
+# A list keeps its order; each entry may be a glob
+query IT
+SELECT ID, filename FROM read_dbc(['test/fixtures/no_eof_marker.dbc', 'test/fixtures/eof_mark*.dbc'], filename := true);
+----
+1	test/fixtures/no_eof_marker.dbc
+2	test/fixtures/no_eof_marker.dbc
+3	test/fixtures/no_eof_marker.dbc
+1	test/fixtures/eof_marker.dbc
+2	test/fixtures/eof_marker.dbc
+3	test/fixtures/eof_marker.dbc
+
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/eof_marker.dbc', filename := true, include_deleted := true));
+----
+ID	BIGINT
+NAME	VARCHAR
+_deleted	BOOLEAN
+filename	VARCHAR
+
+# .dbc and .dbf in one call (plain .dbf by extension)
+query IT
+SELECT count(*), count(DISTINCT filename) FROM read_dbc(['test/fixtures/types.dbc', 'test/fixtures/plain.dbf'], filename := true);
+----
+16	2
+
+# Different layouts need union_by_name
+statement error
+SELECT * FROM read_dbc('test/fixtures/layout_*.dbc');
+----
+schema of "test/fixtures/layout_b.dbc" differs from "test/fixtures/layout_a.dbc": column 3 is "EXTRA" but "QTY" in the first file; use union_by_name := true
+
+statement error
+SELECT * FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/cp850.dbc']);
+----
+schema of "test/fixtures/cp850.dbc" differs from "test/fixtures/eof_marker.dbc": column 2 is "TXT" but "NAME" in the first file
+
+statement error
+SELECT * FROM read_dbc(['test/fixtures/layout_a.dbc', 'test/fixtures/layout_a.dbc', 'test/fixtures/eof_marker.dbc']);
+----
+schema of "test/fixtures/eof_marker.dbc" differs from "test/fixtures/layout_a.dbc"
+
+# Same names and types (field widths may differ): no union_by_name needed
+query I
+SELECT count(*) FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/deleted.dbc']);
+----
+6
+
+# union_by_name: first-seen order, missing columns are NULL,
+# BIGINT + DECIMAL(7,2) -> DECIMAL(21,2) (exact), C(5) + C(8) -> VARCHAR
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true));
+----
+UF	VARCHAR
+CODE	VARCHAR
+QTY	DECIMAL(21,2)
+NAME	VARCHAR
+EXTRA	VARCHAR
+
+query TTTTTT
+SELECT * FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true, filename := true);
+----
+AC	12345	100.00	ALPHA	NULL	test/fixtures/layout_a.dbc
+AM	00001	-5.00	BETA	NULL	test/fixtures/layout_a.dbc
+PA	12345678	1234.56	GAMMA	X1	test/fixtures/layout_b.dbc
+RR	00000002	-0.50	DELTA	(empty)	test/fixtures/layout_b.dbc
+
+query R
+SELECT sum(QTY) FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true);
+----
+1329.06
+
+# projection of a column missing from one file
+query T
+SELECT EXTRA FROM read_dbc(['test/fixtures/layout_b.dbc', 'test/fixtures/layout_a.dbc'], union_by_name := true);
+----
+X1
+(empty)
+NULL
+NULL
+
+# union in the other order: layout_b's order wins
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc(['test/fixtures/layout_b.dbc', 'test/fixtures/layout_a.dbc'], union_by_name := true));
+----
+UF	VARCHAR
+CODE	VARCHAR
+EXTRA	VARCHAR
+QTY	DECIMAL(21,2)
+NAME	VARCHAR
+
+# types applies to every file before union: VARCHAR overrides give the raw text
+query TT
+SELECT QTY, typeof(QTY) FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true, types := {'QTY': 'VARCHAR'});
+----
+  100	VARCHAR
+   -5	VARCHAR
+1234.56	VARCHAR
+   -0.5	VARCHAR
+
+# a types override for a column present in only some files
+
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true, types := {'extra': 'varchar'});
+----
+4
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/layout_*.dbc', union_by_name := true, types := {'NOPE': 'DATE'});
+----
+types: column "NOPE" was not found in any of the files
+
+# Unrelated files: union_by_name puts all columns side by side
+query ITTT
+SELECT ID, NAME, UF, filename FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/layout_a.dbc'], union_by_name := true, filename := true);
+----
+1	A	NULL	test/fixtures/eof_marker.dbc
+2	B	NULL	test/fixtures/eof_marker.dbc
+3	C	NULL	test/fixtures/eof_marker.dbc
+NULL	ALPHA	AC	test/fixtures/layout_a.dbc
+NULL	BETA	AM	test/fixtures/layout_a.dbc
+
+# A glob that matches nothing names the pattern
+statement error
+SELECT * FROM read_dbc('test/fixtures/nothing_*.dbc');
+----
+no files found that match the pattern "test/fixtures/nothing_*.dbc"
+
+statement error
+SELECT * FROM read_dbc(['test/fixtures/types.dbc', 'test/fixtures/nothing_*.dbc']);
+----
+no files found that match the pattern "test/fixtures/nothing_*.dbc"
+
+statement error
+SELECT * FROM read_dbc([]::VARCHAR[]);
+----
+the file list is empty
+
+# An error in any file fails the query and names that file
+statement error
+SELECT * FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/bad_crc.dbc']);
+----
+read_dbc: "test/fixtures/bad_crc.dbc": CRC-32 mismatch
+
+statement error
+SELECT * FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/bad_header.dbc']);
+----
+read_dbc: "test/fixtures/bad_header.dbc": invalid DBF header
+
+# With several threads, insertion order is still file order, then record order
+statement ok
+PRAGMA threads=4;
+
+query IT
+SELECT ID, filename FROM read_dbc(['test/fixtures/RDAC0801.dbc', 'test/fixtures/no_eof_marker.dbc', 'test/fixtures/eof_marker.dbc', 'test/fixtures/no_eof_marker.dbc'], union_by_name := true, filename := true) WHERE ID IS NOT NULL;
+----
+1	test/fixtures/no_eof_marker.dbc
+2	test/fixtures/no_eof_marker.dbc
+3	test/fixtures/no_eof_marker.dbc
+1	test/fixtures/eof_marker.dbc
+2	test/fixtures/eof_marker.dbc
+3	test/fixtures/eof_marker.dbc
+1	test/fixtures/no_eof_marker.dbc
+2	test/fixtures/no_eof_marker.dbc
+3	test/fixtures/no_eof_marker.dbc
+
+query IIII
+WITH t AS (
+  SELECT filename, N_AIH, row_number() OVER () AS rn
+  FROM read_dbc(['test/fixtures/eof_marker.dbc', 'test/fixtures/RDAC0801.dbc', 'test/fixtures/types.dbc', 'test/fixtures/RDAC0801.dbc'], union_by_name := true, filename := true)
+)
+SELECT min(rn), max(rn), count(*), count(DISTINCT filename) FROM t WHERE rn BETWEEN 4 AND 2090 AND filename = 'test/fixtures/RDAC0801.dbc';
+----
+4	2090	2087	1

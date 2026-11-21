@@ -1,0 +1,77 @@
+# name: test/sql/special_files.test
+# description: plain .dbf, duplicate names, fallback columns, empty table
+# group: [read_dbc]
+
+require read_dbc
+
+# plain.dbf is the decompressed types.dbc
+query I
+SELECT count(*) FROM (SELECT * FROM read_dbc('test/fixtures/plain.dbf') EXCEPT ALL SELECT * FROM read_dbc('test/fixtures/types.dbc'));
+----
+0
+
+query I
+SELECT count(*) FROM (SELECT * FROM read_dbc('test/fixtures/types.dbc') EXCEPT ALL SELECT * FROM read_dbc('test/fixtures/plain.dbf'));
+----
+0
+
+query I
+SELECT count(*) FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/plain.dbf')) a JOIN (DESCRIBE SELECT * FROM read_dbc('test/fixtures/types.dbc')) b USING (column_name, column_type);
+----
+8
+
+# Duplicate field names: later ones become NAME_1, NAME_2, ...
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/dupnames.dbc'));
+----
+A	VARCHAR
+A_1	BIGINT
+
+query TI
+SELECT * FROM read_dbc('test/fixtures/dupnames.dbc');
+----
+x	1
+y	2
+
+query I
+SELECT A_1 FROM read_dbc('test/fixtures/dupnames.dbc');
+----
+1
+2
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/dupnames.dbc', types := {'A_1': 'VARCHAR'});
+----
+types: cannot override "A_1": the file has several fields named "A"
+
+# Fields without a typed mapping are read as VARCHAR
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/fallback.dbc'));
+----
+ID	BIGINT
+MEMO	VARCHAR
+ODD	VARCHAR
+NAME	VARCHAR
+D6	VARCHAR
+
+query ITTTT
+SELECT * FROM read_dbc('test/fixtures/fallback.dbc');
+----
+1	         1	12.3	ab	202401
+2	(empty)	(empty)	cd	(empty)
+
+# empty table: schema, no rows
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/empty.dbc'));
+----
+ID	BIGINT
+NAME	VARCHAR
+
+query IT
+SELECT * FROM read_dbc('test/fixtures/empty.dbc');
+----
+
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/empty.dbc');
+----
+0

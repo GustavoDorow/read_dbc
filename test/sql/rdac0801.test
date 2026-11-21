@@ -1,0 +1,59 @@
+# name: test/sql/rdac0801.test
+# description: the real DATASUS file RDAC0801.dbc (SIH/RD, Acre, 2008-01).
+#   Expected values were computed independently with Python from
+#   test/reference/RDAC0801.{raw,dbfread}.jsonl.gz, not from this extension.
+# group: [read_dbc]
+
+require read_dbc
+
+query II
+SELECT count(*), count(DISTINCT N_AIH) FROM read_dbc('test/fixtures/RDAC0801.dbc');
+----
+2087	2087
+
+query I
+SELECT count(*) FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/RDAC0801.dbc'));
+----
+86
+
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/RDAC0801.dbc')) WHERE column_name IN ('UF_ZI', 'IDADE', 'VAL_TOT', 'US_TOT', 'DT_INTER', 'REMESSA');
+----
+UF_ZI	VARCHAR
+VAL_TOT	DECIMAL(14,2)
+US_TOT	DECIMAL(10,2)
+DT_INTER	VARCHAR
+IDADE	BIGINT
+REMESSA	VARCHAR
+
+# first and last records
+query TTTTIT
+SELECT N_AIH, VAL_TOT, DT_INTER, DIAG_PRINC, IDADE, SEXO FROM read_dbc('test/fixtures/RDAC0801.dbc') LIMIT 1;
+----
+1207500003006	143.85	20071207	Z018	82	3
+
+query TTTTIT
+SELECT N_AIH, VAL_TOT, DT_INTER, DIAG_PRINC, IDADE, SEXO FROM read_dbc('test/fixtures/RDAC0801.dbc') LIMIT 1 OFFSET 2086;
+----
+1208100002208	259.97	20080102	N288	31	3
+
+query RRI
+SELECT sum(VAL_TOT), max(VAL_TOT), sum(QT_DIARIAS) FROM read_dbc('test/fixtures/RDAC0801.dbc');
+----
+902416.00	6689.18	7467
+
+query II
+SELECT count(DISTINCT MUNIC_RES), count(*) FILTER (WHERE SEXO = '1') FROM read_dbc('test/fixtures/RDAC0801.dbc');
+----
+29	650
+
+query TT
+SELECT min(DT_INTER), max(DT_INTER) FROM read_dbc('test/fixtures/RDAC0801.dbc', types := {'DT_INTER': 'DATE'});
+----
+2007-01-22	2008-01-30
+
+# auto = CP850 (LDID 0x02); the file is pure ASCII, so latin1 gives the same rows
+query I
+SELECT count(*) FROM (SELECT * FROM read_dbc('test/fixtures/RDAC0801.dbc') EXCEPT ALL SELECT * FROM read_dbc('test/fixtures/RDAC0801.dbc', encoding := 'latin1'));
+----
+0

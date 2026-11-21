@@ -1,0 +1,73 @@
+# name: test/sql/projection.test
+# description: projection pushdown and count(*)
+# group: [read_dbc]
+
+require read_dbc
+
+query T
+SELECT DTC FROM read_dbc('test/fixtures/types.dbc') WHERE N10 = 7;
+----
+19700101
+
+# columns in a different order than declared
+query IT
+SELECT N10, TXT FROM read_dbc('test/fixtures/types.dbc') WHERE N10 < 0;
+----
+-42	ABC
+-999999999	  LEAD
+
+query II
+SELECT count(*), count(N20) FROM read_dbc('test/fixtures/types.dbc');
+----
+8	6
+
+# Unprojected fields are never parsed: bad_number.dbc has 'ABC' in ID, record 3
+query T
+SELECT NAME FROM read_dbc('test/fixtures/bad_number.dbc') ORDER BY ALL;
+----
+A
+B
+C
+D
+
+statement error
+SELECT ID FROM read_dbc('test/fixtures/bad_number.dbc');
+----
+read_dbc: "test/fixtures/bad_number.dbc": record 3, field "ID"
+
+# count(*) on every valid fixture
+foreach spec types.dbc=8 plain.dbf=8 cp850.dbc=4 latin1.dbc=4 cp1252.dbc=5 cp860.dbc=4 deleted.dbc=3 eof_marker.dbc=3 no_eof_marker.dbc=3 empty.dbc=0 fallback.dbc=2 dupnames.dbc=2 layout_a.dbc=2 layout_b.dbc=2 RDAC0801.dbc=2087
+
+query I
+SELECT count(*) = split_part('${spec}', '=', 2)::BIGINT FROM read_dbc('test/fixtures/' || split_part('${spec}', '=', 1));
+----
+true
+
+endloop
+
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := true);
+----
+5
+
+# count(*) still reads to the end and checks the CRC
+statement error
+SELECT count(*) FROM read_dbc('test/fixtures/bad_crc.dbc');
+----
+CRC-32 mismatch
+
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/bad_crc.dbc', verify_crc := false);
+----
+3
+
+# the generated columns can be projected alone
+query T
+SELECT filename FROM read_dbc('test/fixtures/eof_marker.dbc', filename := true) LIMIT 1;
+----
+test/fixtures/eof_marker.dbc
+
+query T
+SELECT _deleted FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := true) WHERE _deleted LIMIT 1;
+----
+true

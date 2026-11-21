@@ -1,0 +1,83 @@
+# name: test/sql/encodings.test
+# description: encoding := 'auto' (from the LDID byte) and explicit encodings
+# group: [read_dbc]
+
+require read_dbc
+
+# auto picks CP850 (LDID 0x02), Latin-1 (0x00), CP1252 (0x03), CP860 (0x24)
+foreach file cp850 latin1 cp860
+
+query IT
+SELECT * FROM read_dbc('test/fixtures/${file}.dbc');
+----
+1	ANÁLISE
+2	CIRÚRGICA
+3	SEM INFORMAÇÃO
+4	Nº
+
+endloop
+
+query IT
+SELECT * FROM read_dbc('test/fixtures/cp1252.dbc');
+----
+1	ANÁLISE
+2	CIRÚRGICA
+3	SEM INFORMAÇÃO
+4	Nº
+5	€ 10
+
+# explicit encodings matching the file give the same text
+query T
+SELECT TXT FROM read_dbc('test/fixtures/cp850.dbc', encoding := 'cp850') WHERE ID = 3;
+----
+SEM INFORMAÇÃO
+
+query T
+SELECT TXT FROM read_dbc('test/fixtures/cp860.dbc', encoding := 'CP860') WHERE ID = 3;
+----
+SEM INFORMAÇÃO
+
+query T
+SELECT TXT FROM read_dbc('test/fixtures/cp1252.dbc', encoding := 'windows-1252') WHERE ID = 5;
+----
+€ 10
+
+query T
+SELECT TXT FROM read_dbc('test/fixtures/latin1.dbc', encoding := 'iso-8859-1') WHERE ID = 2;
+----
+CIRÚRGICA
+
+# an explicit encoding wins over the LDID: CP850 bytes read as Latin-1
+query IT
+SELECT * FROM read_dbc('test/fixtures/cp850.dbc', encoding := 'latin1') WHERE ID IN (1, 2, 4);
+----
+1	ANµLISE
+2	CIRéRGICA
+4	N§
+
+query T
+SELECT TXT FROM read_dbc('test/fixtures/cp860.dbc', encoding := 'cp850') WHERE ID = 3;
+----
+SEM INFORMAÇÄO
+
+query T
+SELECT TXT FROM read_dbc('test/fixtures/cp850.dbc', encoding := 'cp437') WHERE ID = 1;
+----
+AN╡LISE
+
+# utf8 is strict
+statement error
+SELECT * FROM read_dbc('test/fixtures/cp850.dbc', encoding := 'utf8');
+----
+invalid UTF-8
+
+# ASCII rows decode under utf8
+query T
+SELECT TXT FROM read_dbc('test/fixtures/types.dbc', encoding := 'utf8') LIMIT 1;
+----
+0012
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/cp850.dbc', encoding := 'koi8-r');
+----
+unknown encoding "koi8-r"; valid encodings: 'auto', 'latin1'

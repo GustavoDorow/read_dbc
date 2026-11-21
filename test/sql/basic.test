@@ -1,0 +1,83 @@
+# name: test/sql/basic.test
+# description: read_dbc on types.dbc: every column type and value, exactly
+# group: [read_dbc]
+
+require read_dbc
+
+query IIIIIIII
+SELECT * FROM read_dbc('test/fixtures/types.dbc');
+----
+0012	0	0.00	0	0.0000	2023-01-15	true	20240229
+ABC	-42	-0.50	12345678901234567890	123456789012345678901234567890123.4567	NULL	false	00000000
+(empty)	NULL	NULL	NULL	NULL	NULL	true	(empty)
+A B	9999999999	999999999.99	-9999999999999999999	-99999999999999999999999999999999.9999	NULL	false	19991231
+  LEAD	-999999999	12.30	99999999999999999999	0.0001	1970-01-01	NULL	20000101
+Z	7	-1.00	-1	-1.5000	2999-12-31	NULL	19700101
+NUL	5	0.50	NULL	NULL	NULL	true	20240101
+12345678	0	0.00	0	1.0000	2000-02-29	false	20231231
+
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/types.dbc'));
+----
+TXT	VARCHAR
+N10	BIGINT
+N12	DECIMAL(12,2)
+N20	DECIMAL(20,0)
+N38	DECIMAL(38,4)
+DT	DATE
+FLAG	BOOLEAN
+DTC	VARCHAR
+
+query TTTTTTTT
+SELECT typeof(TXT), typeof(N10), typeof(N12), typeof(N20), typeof(N38), typeof(DT), typeof(FLAG), typeof(DTC)
+FROM read_dbc('test/fixtures/types.dbc') LIMIT 1;
+----
+VARCHAR	BIGINT	DECIMAL(12,2)	DECIMAL(20,0)	DECIMAL(38,4)	DATE	BOOLEAN	VARCHAR
+
+# Blank C is '' (not NULL); blank N/D/L are NULL
+query IIII
+SELECT count(*) FILTER (WHERE TXT = ''), count(*) FILTER (WHERE N10 IS NULL),
+       count(*) FILTER (WHERE DT IS NULL), count(*) FILTER (WHERE FLAG IS NULL)
+FROM read_dbc('test/fixtures/types.dbc');
+----
+1	1	4	2
+
+query RR
+SELECT sum(N12), sum(N38) FROM read_dbc('test/fixtures/types.dbc');
+----
+1000000011.29	23456789012345678901234567890122.9569
+
+# eof marker present or absent: same rows
+query IT
+SELECT * FROM read_dbc('test/fixtures/eof_marker.dbc');
+----
+1	A
+2	B
+3	C
+
+query IT
+SELECT * FROM read_dbc('test/fixtures/no_eof_marker.dbc');
+----
+1	A
+2	B
+3	C
+
+# deleted records are skipped by default
+query IT
+SELECT * FROM read_dbc('test/fixtures/deleted.dbc');
+----
+1	ONE
+3	THREE
+4	FOUR
+
+# Named-argument syntax with '='
+query I
+SELECT count(*) FROM read_dbc('test/fixtures/deleted.dbc', include_deleted = true);
+----
+5
+
+# the function is documented in duckdb_functions()
+query T
+SELECT DISTINCT function_type FROM duckdb_functions() WHERE function_name = 'read_dbc';
+----
+table
