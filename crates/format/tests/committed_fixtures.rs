@@ -408,6 +408,41 @@ fn duplicate_names() {
 }
 
 #[test]
+fn promotion_fixture_values() {
+    let typed = read("promote.dbc");
+    assert_eq!(typed.names, ["DT", "QTY", "FLAG"]);
+    assert_eq!(
+        typed.types,
+        [ColumnType::Date, ColumnType::BigInt, ColumnType::Boolean]
+    );
+    assert_eq!(
+        typed.buf.columns[0],
+        [date(2024, 2, 29), date(1970, 1, 1), N]
+    );
+    assert_eq!(typed.buf.columns[1], [i(-42), i(7), N]);
+    assert_eq!(typed.buf.columns[2], [b(true), b(false), N]);
+
+    let mixed = read("promote.dbf");
+    assert_eq!(mixed.names, typed.names);
+    assert_eq!(
+        mixed.types,
+        [ColumnType::Varchar, ColumnType::Varchar, ColumnType::BigInt]
+    );
+    assert_eq!(mixed.buf.columns[0], [t("20240229"), t("")]);
+    assert_eq!(mixed.buf.columns[1], [t("00042"), t("")]);
+    assert_eq!(mixed.buf.columns[2], [i(-3), N]);
+}
+
+#[test]
+fn reserved_column_fixture_values() {
+    let r = read("reserved_names.dbc");
+    assert_eq!(r.names, ["FILENAME", "_DELETED"]);
+    assert_eq!(r.types, [ColumnType::Varchar, ColumnType::Varchar]);
+    assert_eq!(r.buf.columns[0], [t("original")]);
+    assert_eq!(r.buf.columns[1], [t("active")]);
+}
+
+#[test]
 fn layouts() {
     let a = read("layout_a.dbc");
     assert_eq!(a.names, ["UF", "CODE", "QTY", "NAME"]);

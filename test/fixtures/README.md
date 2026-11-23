@@ -36,6 +36,9 @@ simple greedy matcher.
 | `dupnames.dbc` | 117 | raw, 4 KiB | `e7463093856990da…` |
 | `layout_a.dbc` | 208 | raw, 4 KiB | `3c834a951405553e…` |
 | `layout_b.dbc` | 251 | raw, 4 KiB | `aa951469f7a35d3c…` |
+| `promote.dbc` | 176 | raw, 4 KiB | `2d99e9f35cfaf4c6…` |
+| `reserved_names.dbc` | 126 | raw, 4 KiB | `82f72d8e43fc9c23…` |
+| `promote.dbf` | 164 | — | `22eb04f61ebcbcad…` |
 | `plain.dbf` | 1138 | — | `a308fa273b8daa02…` |
 | `bad_crc.dbc` | 121 | raw, 4 KiB | `babc172c7f746c20…` |
 | `truncated.dbc` | 773 | — | `d2ff2600f924fdee…` |
@@ -142,6 +145,20 @@ Same "family" with a schema change, for `union_by_name`:
 layout_a rows: (`AC`, `12345`, 100, `ALPHA`), (`AM`, `00001`, -5, `BETA`).
 layout_b rows: (`PA`, `12345678`, `X1`, 1234.56, `GAMMA`),
 (`RR`, `00000002`, `""`, -0.50, `DELTA`).
+
+### `promote.dbc` / `promote.dbf`
+
+The glob `promote.db?` matches both formats. The columns `DT`, `QTY`, and
+`FLAG` are DATE, BIGINT, and BOOLEAN in the DBC. Its rows are
+(2024-02-29, -42, true), (1970-01-01, 7, false), and (NULL, NULL, NULL).
+The DBF uses C(8), C(5), and N(3,0), with rows
+(`20240229`, `00042`, -3) and (`""`, `""`, NULL). The SQL union promotes all
+three columns to VARCHAR.
+
+### `reserved_names.dbc`
+
+One row with `FILENAME` = `original` and `_DELETED` = `active` (both C(8)).
+SQL rejects `filename := true` and `include_deleted := true` on this file.
 
 ## Corrupt files (every one must make a full read fail)
 

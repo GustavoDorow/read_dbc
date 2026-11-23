@@ -278,6 +278,33 @@ pub fn fixtures() -> Vec<Fixture> {
     lb.push(false, &[b"RR", b"00000002", b"", b"-0.5", b"DELTA"]);
     dbc("layout_b.dbc", &lb, RAW4K);
 
+    let mut typed = Table::new(vec![
+        f("DT", b'D', 8, 0),
+        f("QTY", b'N', 5, 0),
+        f("FLAG", b'L', 1, 0),
+    ]);
+    typed.push(false, &[b"20240229", b"-0042", b"T"]);
+    typed.push(false, &[b"19700101", b"+0007", b"F"]);
+    typed.push(false, &[b"00000000", b"", b"?"]);
+    dbc("promote.dbc", &typed, RAW4K);
+
+    let mut reserved = Table::new(vec![f("FILENAME", b'C', 8, 0), f("_DELETED", b'C', 8, 0)]);
+    reserved.push(false, &[b"original", b"active"]);
+    dbc("reserved_names.dbc", &reserved, RAW4K);
+
+    let mut mixed = Table::new(vec![
+        f("DT", b'C', 8, 0),
+        f("QTY", b'C', 5, 0),
+        f("FLAG", b'N', 3, 0),
+    ]);
+    mixed.push(false, &[b"20240229", b"00042", b"-03"]);
+    mixed.push(false, &[b"", b"", b""]);
+    out.push(Fixture {
+        name: "promote.dbf",
+        bytes: mixed.to_dbf(),
+        dcl: None,
+    });
+
     out.push(Fixture {
         name: "plain.dbf",
         bytes: types.to_dbf(),
@@ -513,6 +540,20 @@ Same "family" with a schema change, for `union_by_name`:
 layout_a rows: (`AC`, `12345`, 100, `ALPHA`), (`AM`, `00001`, -5, `BETA`).
 layout_b rows: (`PA`, `12345678`, `X1`, 1234.56, `GAMMA`),
 (`RR`, `00000002`, `""`, -0.50, `DELTA`).
+
+### `promote.dbc` / `promote.dbf`
+
+The glob `promote.db?` matches both formats. The columns `DT`, `QTY`, and
+`FLAG` are DATE, BIGINT, and BOOLEAN in the DBC. Its rows are
+(2024-02-29, -42, true), (1970-01-01, 7, false), and (NULL, NULL, NULL).
+The DBF uses C(8), C(5), and N(3,0), with rows
+(`20240229`, `00042`, -3) and (`""`, `""`, NULL). The SQL union promotes all
+three columns to VARCHAR.
+
+### `reserved_names.dbc`
+
+One row with `FILENAME` = `original` and `_DELETED` = `active` (both C(8)).
+SQL rejects `filename := true` and `include_deleted := true` on this file.
 
 ## Corrupt files (every one must make a full read fail)
 

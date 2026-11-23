@@ -40,6 +40,23 @@ SELECT count(*), count(DISTINCT filename) FROM read_dbc(['test/fixtures/types.db
 ----
 16	2
 
+# A single glob matches both formats and promotes each mixed type to VARCHAR.
+query TT
+SELECT column_name, column_type FROM (DESCRIBE SELECT * FROM read_dbc('test/fixtures/promote.db?', union_by_name := true));
+----
+DT	VARCHAR
+QTY	VARCHAR
+FLAG	VARCHAR
+
+query TTTT
+SELECT * FROM read_dbc('test/fixtures/promote.db?', union_by_name := true, filename := true);
+----
+2024-02-29	-42	true	test/fixtures/promote.dbc
+1970-01-01	7	false	test/fixtures/promote.dbc
+NULL	NULL	NULL	test/fixtures/promote.dbc
+20240229	00042	-3	test/fixtures/promote.dbf
+(empty)	(empty)	NULL	test/fixtures/promote.dbf
+
 # Different layouts need union_by_name
 statement error
 SELECT * FROM read_dbc('test/fixtures/layout_*.dbc');

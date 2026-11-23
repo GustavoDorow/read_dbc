@@ -44,6 +44,21 @@ SELECT count(*) FROM read_dbc('test/fixtures/deleted.dbc', include_deleted := tr
 ----
 2
 
+query TT
+SELECT * FROM read_dbc('test/fixtures/reserved_names.dbc');
+----
+original	active
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/reserved_names.dbc', filename := true);
+----
+read_dbc: "test/fixtures/reserved_names.dbc": the file already has a column named "filename", which read_dbc would add
+
+statement error
+SELECT * FROM read_dbc('test/fixtures/reserved_names.dbc', include_deleted := true);
+----
+read_dbc: "test/fixtures/reserved_names.dbc": the file already has a column named "_deleted", which read_dbc would add
+
 # verify_crc
 statement error
 SELECT * FROM read_dbc('test/fixtures/bad_crc.dbc');
