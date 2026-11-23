@@ -8,6 +8,7 @@ A DuckDB extension written in Rust (MIT-licensed, targeting DuckDB v2.0.1) for q
 git clone --recurse-submodules https://github.com/GustavoDorow/read_dbc
 cd read_dbc
 make configure && make release
+scripts/fixtures/fetch.sh   # downloads sample SIH .dbc files into test/data/
 duckdb -unsigned
 ```
 
@@ -19,7 +20,7 @@ LOAD 'build/release/read_dbc.duckdb_extension';
 -- LOAD read_dbc;
 
 SELECT MUNIC_RES, count(*) AS admissions, sum(VAL_TOT) AS total_brl
-FROM read_dbc('RDSC2501.dbc')
+FROM read_dbc('test/data/RDSC2501.dbc')
 GROUP BY MUNIC_RES
 ORDER BY total_brl DESC
 LIMIT 10;
@@ -27,7 +28,7 @@ LIMIT 10;
 
 ## Why
 
-Working with DATASUS `.dbc` files normally starts with a conversion pipeline: decompress `.dbc` to an uncompressed `.dbf` (roughly 9–10x larger on disk) with `blast-dbf`, `pyreaddbc`, `datasus-dbc`, or TabWin, then parse the `.dbf` in Python (`dbfread`, `pandas`, `PySUS`) or convert to Parquet before querying. That adds temporary disk writes, upfront full-file latency before a single row is readable, and gigabytes of Python/pandas RAM on large state-month files. Existing open-source `.dbc` readers also skip the stored CRC-32, and reading SIH files with a Latin-1 default silently corrupts CP850 accented text.
+Working with DATASUS `.dbc` files normally starts with a conversion pipeline: decompress `.dbc` to an uncompressed `.dbf` (roughly 9–10x larger on disk) with `blast-dbf`, `pyreaddbc`, `datasus-dbc`, or TabWin, then parse the `.dbf` in Python (`dbfread`, `pandas`, `PySUS`) or convert to Parquet before querying. That adds temporary disk writes, upfront full-file latency before a single row is readable, and gigabytes of Python/pandas RAM on large state-month files. The open-source `.dbc` readers inspected in [docs/research/dbc-format.md](docs/research/dbc-format.md) (`blast-dbf`, R `read.dbc`, `datasus-dbc`, `pyreaddbc`/`PySUS`, and `datasus-core`) also skip the stored CRC-32, and reading SIH files with a Latin-1 default silently corrupts CP850 accented text.
 
 `read_dbc` decodes the DCL stream on the fly using fixed buffers (32 KiB output ring, 32 KiB input buffer, one record buffer), parses only projected columns, preserves exact decimal precision (`BIGINT` and `DECIMAL`), respects the header's code page, and verifies the CRC-32 checksum.
 
@@ -67,6 +68,8 @@ Named parameters accept either `:=` or `=`.
 
 ### Examples
 
+Examples below use the committed fixture in `test/fixtures/` and the sample SIH files downloaded to `test/data/` by `scripts/fixtures/fetch.sh`.
+
 ```sql
 -- Replacement scan (.dbc only; globs supported)
 SELECT count(*) FROM 'test/fixtures/RDAC0801.dbc';
@@ -77,23 +80,23 @@ FROM read_dbc('test/fixtures/RDAC0801.dbc', types := {'DT_INTER': 'DATE'});
 
 -- Aggregate SIH hospital admissions by municipality (projection parses only 2 of 113 columns)
 SELECT MUNIC_RES, count(*) AS admissions, sum(VAL_TOT) AS total_brl
-FROM read_dbc('RDSC2501.dbc')
+FROM read_dbc('test/data/RDSC2501.dbc')
 GROUP BY MUNIC_RES
 ORDER BY total_brl DESC
 LIMIT 10;
 
 -- Union across years where SIH added columns (86 cols in 2008, 113 in 2015-2025, 114 in 2026)
 SELECT filename, count(*) AS admissions, sum(VAL_TOT) AS total_brl
-FROM read_dbc('data/RD*.dbc', union_by_name := true, filename := true)
+FROM read_dbc('test/data/RD*.dbc', union_by_name := true, filename := true)
 GROUP BY filename
 ORDER BY filename;
 
--- Explicit file list + MAP syntax for types
-SELECT DT_INTER, N_AIH, VAL_TOT
+-- Explicit file list + MAP syntax for types (convert C(8) dates to DATE)
+SELECT DT_INTER, DT_SAIDA, VAL_TOT
 FROM read_dbc(
-    ['RDAC0801.dbc', 'data/RD24*.dbc'],
+    ['test/data/RDAC0801.dbc', 'test/data/RD*24*.dbc'],
     union_by_name := true,
-    types := MAP {'DT_INTER': 'DATE', 'N_AIH': 'VARCHAR'}
+    types := MAP {'DT_INTER': 'DATE', 'DT_SAIDA': 'DATE'}
 )
 LIMIT 5;
 ```
@@ -123,7 +126,7 @@ Column types come strictly from the DBF header — no data sampling is performed
 | `0x03`, `0x57`, `0x58`, `0x59` | `cp1252` |
 | Anything else (including `0x00`) | `latin1` (never fails; preserves every byte losslessly) |
 
-**SIH CP850 finding.** Every sampled DATASUS SIH file declares LDID `0x02` (`cp850`). Reading SIH files as Latin-1 — the common default in Python and R pipelines — garbles Portuguese accented text. In `RDSC2501.dbc`, 55 `AUD_JUST` values carry CP850 high bytes (`0x87` → `ç`, `0xA0` → `á`, `0xA1` → `í`, `0xA3` → `ú`), such as `DESSCRIçaO CIRúRGICA COMPATíVEL COM O PROCEDIMENTO` and `ANáLISE DO PRONTUáRIO`; decoded as Latin-1, those bytes turn into C1 control characters (`0x87`), non-breaking spaces (`0xA0`), `¡`, and `£`. Likewise, uppercase CP850 words in `test/fixtures/cp850.dbc` (`ANÁLISE`, `CIRÚRGICA`, `Nº`) read as `ANµLISE`, `CIRéRGICA`, and `N§` under Latin-1. Other DATASUS families declare different LDIDs (e.g. `0x00` in CNES/ST, SIM/DO, and SINASC/DN; `0x03` in SIA/PA; `0x58` in CNES/LT), which `encoding := 'auto'` resolves per file.
+**SIH CP850 finding.** Every sampled DATASUS SIH file declares LDID `0x02` (`cp850`). Reading SIH files as Latin-1 — the common default in Python and R pipelines — garbles Portuguese accented text. In `RDSC2501.dbc`, 55 `AUD_JUST` values carry CP850 high bytes (for example `0x87` → `ç`, `0xA0` → `á`, `0xA1` → `í`, `0xA3` → `ú`, as well as `É`, `é`, `ê`, `ó`, and `º`), such as `DESSCRIçaO CIRúRGICA COMPATíVEL COM O PROCEDIMENTO` and `ANáLISE DO PRONTUáRIO`; decoded as Latin-1, those bytes turn into C1 control characters (`0x87`), non-breaking spaces (`0xA0`), `¡`, `£`, and similar mojibake. Likewise, uppercase CP850 words in `test/fixtures/cp850.dbc` (`ANÁLISE`, `CIRÚRGICA`, `Nº`) read as `ANµLISE`, `CIRéRGICA`, and `N§` under Latin-1. Other DATASUS families declare different LDIDs (e.g. `0x00` in CNES/ST, SIM/DO, and SINASC/DN; `0x03` in SIA/PA; `0x58` in CNES/LT), which `encoding := 'auto'` resolves per file.
 
 ## Integrity guarantees
 
@@ -156,7 +159,7 @@ Checked against `dbfread` 2.0.7 (`encoding='iso-8859-1'`) using the release buil
 | `RDAC2601.dbc` (2026-01, AC) | 4,774 | 114 | 544,236 | 0 |
 | `union_by_name` of all 5 | 68,041 | 114 | rows = sum, values = per-file reads | 0 |
 
-**Other DATASUS families (5 files, 1,664,019 values compared, 0 mismatches):**
+**Other DATASUS families (5 files, 1,664,019 values compared with `encoding := 'latin1'`, 0 mismatches):**
 
 | File | Family | Rows | Cols | Values compared | Mismatches | LDID | Auto encoding |
 |---|---|---:|---:|---:|---:|---|---|
@@ -171,11 +174,11 @@ Checked against `dbfread` 2.0.7 (`encoding='iso-8859-1'`) using the release buil
 ### Fuzzing and differential testing
 
 - **Fuzzing ([docs/fuzzing.md](docs/fuzzing.md)):** Two `cargo-fuzz` targets under `crates/format/fuzz/` ran under AddressSanitizer (`rustc 1.102.0-nightly`, AMD Ryzen 5 5600): `dbc_reader` (~19 min total, 180,000+ executions in the final 2-min run, 1,232 edges / 4,399 features) and `dcl` (~27 min total, 456,767 executions in the final 10-min run, 182 edges / 604 features). Zero crashes, timeouts, or library OOMs (an initial OOM in the `dcl` harness was caused by calling the test helper `decompress_all` into an unbounded `Vec`; switching the harness to stream like the extension resolved it).
-- **Differential and mutation testing:** As recorded in [docs/fuzzing.md](docs/fuzzing.md), earlier independent runs checked the Rust DCL decoder differentially against Mark Adler's reference `blast.c` (~143,000 generated streams, 0 mismatches) and ran ~3.2 million CRC-preserving mutations of real files (0 panics).
+- **Differential and mutation testing:** During development, a differential harness compared the Rust DCL decoder with Mark Adler's reference `blast.c` on about 143,000 generated streams with no mismatches, and about 3.2 million CRC-preserving mutations of real files produced no panics; these harnesses are not part of the repository.
 
 ## Performance
 
-Measured on AMD Ryzen 5 5600 (6C/12T), 31.2 GiB RAM, NVMe SSD (btrfs; temp files on disk, not tmpfs), Omarchy Linux (`x86_64`), DuckDB 2.0.1 (`1.5.6` for PySUS), 5 interleaved repetitions per workflow in fresh OS processes with warm page cache. Values below are **medians**; full methodology, minimums, and raw CSV/JSON data are in [docs/benchmarks.md](docs/benchmarks.md).
+Measured at `read_dbc` commit `110f0d8` on AMD Ryzen 5 5600 (6C/12T), 31.2 GiB RAM, NVMe SSD (btrfs; temp files on disk, not tmpfs), Omarchy Linux (`x86_64`), DuckDB 2.0.1 (`1.5.6` for PySUS), 5 interleaved repetitions per workflow in fresh OS processes with warm page cache. Values below are **medians**; full methodology, minimums, and raw CSV/JSON data are in [docs/benchmarks.md](docs/benchmarks.md).
 
 ### Large file: `RDSP2501.dbc` (238,144 rows × 113 cols; 17.9 MiB `.dbc` / 159.4 MiB `.dbf`)
 

@@ -31,4 +31,4 @@ Seed corpus: the committed fixtures in `test/fixtures/`. The corpora grew to 6,8
 
 The first `dcl` harness called `dcl::decompress_all`, which collects the whole output into a `Vec`. A 108 KB input that legitimately expands to hundreds of megabytes exceeded the 512 MB RSS limit. The library's streaming path keeps a fixed ring buffer and is unaffected; the extension never collects output. The harness now streams into a fixed buffer like the extension, and the same input runs in 21 ms. `decompress_all` remains a test convenience and is documented as unbounded.
 
-Earlier, independent differential testing against Mark Adler's reference `blast.c` (about 143,000 generated streams, zero mismatches) and about 3.2 million CRC-preserving mutations of real files (zero panics) are summarised in `crates/format/README.md` and the commit history.
+During development, a differential harness compared the decoder with Mark Adler's reference `blast.c` on about 143,000 generated streams with no mismatches, and about 3.2 million CRC-preserving mutations of real files produced no panics; these harnesses are not part of the repository.
