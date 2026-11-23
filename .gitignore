@@ -6,9 +6,10 @@ duckdb_unittest_tempdir
 /test/bin
 venv
 
-# DATASUS fixtures are downloaded, not committed
+# DATASUS fixtures (including /test/data/families/) are downloaded, not committed
 /test/data/
 /test/reference/
+/scripts/parity/__pycache__/
 
 # Research scratch: downloaded samples, third-party sources, proprietary-binary notes
 /docs/research/work/data/

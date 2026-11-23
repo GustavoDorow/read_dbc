@@ -42,6 +42,7 @@ import duckdb
 ROOT = Path(__file__).resolve().parents[2]
 FILES = ["RDAC0801", "RDRR1501", "RDAP2401", "RDSC2501", "RDAC2601"]
 MAX_REPORTED = 10
+FAMILY_RESULTS_HEADING = "## DATASUS family parity"
 
 
 def connect(build: Path) -> duckdb.DuckDBPyConnection:
@@ -224,7 +225,14 @@ def main() -> int:
         lines += ["", "## Problems", ""] + [f"- {p}" for p in problems]
     text = "\n".join(lines) + "\n"
     print(text)
-    (ROOT / "scripts" / "parity" / "RESULTS.md").write_text(text, encoding="utf-8")
+    results_path = ROOT / "scripts" / "parity" / "RESULTS.md"
+    if results_path.exists():
+        _, heading, family_results = results_path.read_text(encoding="utf-8").partition(
+            FAMILY_RESULTS_HEADING
+        )
+        if heading:
+            text += "\n" + heading + family_results
+    results_path.write_text(text, encoding="utf-8")
     return 1 if problems else 0
 
 

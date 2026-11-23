@@ -53,3 +53,25 @@ Each profile also records:
 Both oracles are UTF-8 JSON Lines with non-ASCII characters represented by JSON escapes. Gzip headers use a fixed timestamp and omit the filename. The Python script runs through PEP 723 metadata with the pinned dependency and restarts the interpreter with `-I`.
 
 Profile statistics include deleted records. NUL bytes inside a field are counted separately as `nul_bytes`. Trimming removes ASCII whitespace from both ends, and the blank count includes values with zero bytes remaining after trimming. A leading zero is a zero followed by another digit at the start of a trimmed value, with an optional sign. For numeric fields, junk is any nonblank value outside signed decimal or scientific notation. The int64 check covers signed integer literals in zero-decimal numeric fields. Character-date checks run on every eight-byte `C` field. `looks_like_date` is true when at least half of the non-blank values are valid `YYYYMMDD` calendar dates. In these fixtures that is `NASC`, `DT_INTER`, and `DT_SAIDA`. `GESTOR_DT` is entirely blank, and the postal code `CEP` is not date-like. Empty values count as blank and other non-calendar values count as invalid. There are no `D` fields; all dates are stored as `C(8)`.
+
+## CNES, SIM, SINASC, and SIA fixtures
+
+[files.tsv](families/files.tsv) lists five small public DATASUS files from
+Acre, Roraima, and Amapá. It records the family and exact FTP path for each
+sample. [SHA256SUMS](families/SHA256SUMS) pins their contents. The fetch script
+checks existing files and verifies new downloads before placing them in
+`test/data/families/`.
+
+```bash
+scripts/fixtures/fetch-families.sh
+make debug
+uv run --script scripts/parity/family_parity.py --build build/debug
+```
+
+The parity script builds the locked datasus-dbc converter and converts the
+samples in a temporary directory. It checks the schema, active row count, and
+each Latin-1 value against dbfread 2.0.7. It also checks the result of auto
+against the explicit encoding selected by the language-driver byte and reports
+examples from the CNES establishment license field when it contains non-ASCII
+text. The report goes to stdout and the script exits nonzero on differences.
+See [RESULTS.md](../parity/RESULTS.md#datasus-family-parity) for the recorded run.

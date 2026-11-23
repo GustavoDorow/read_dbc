@@ -20,3 +20,25 @@ Encoding `auto` (CP850 from the LDID byte) vs `latin1`:
 - RDAC2601: identical under auto and latin1
 
 Total mismatches: 0; problems: 0. Run time 11.2 s.
+
+## DATASUS family parity
+
+DuckDB 2.0.1 with `encoding := 'latin1'` and dbfread 2.0.7 with ISO-8859-1.
+The reference DBFs were produced by the existing datasus-dbc converter.
+
+| File | Family | Rows | Cols | Values compared | Mismatches | LDID (byte 29) | Auto encoding |
+|---|---|---:|---:|---:|---:|---|---|
+| `STAC2401.dbc` | CNES/ST | 1,374 | 208 | 285,792 | 0 | `0x00` | `latin1`, 40 non-ASCII values |
+| `LTAP2401.dbc` | CNES/LT | 120 | 28 | 3,360 | 0 | `0x58` | `cp1252`, ASCII only |
+| `DORR1996.dbc` | SIM/DO | 1,029 | 40 | 41,160 | 0 | `0x00` | `latin1`, ASCII only |
+| `DNAC2024.dbc` | SINASC/DN | 13,101 | 61 | 799,161 | 0 | `0x00` | `latin1`, ASCII only |
+| `PAAP0801.dbc` | SIA/PA | 9,899 | 54 | 534,546 | 0 | `0x03` | `cp1252`, ASCII only |
+
+Total: 1,664,019 values compared, 0 value mismatches.
+
+- STAC2401.dbc has a NUL field-descriptor terminator. The scratch DBF uses `0x0D` at that byte for dbfread. The header fields and record bytes are unchanged.
+- STAC2401.dbc `ALVARA` under auto includes `Nª`, `Nº`, `Nº 016 REGISTRO 74`.
+
+The Portuguese ordinal characters shown for STAC2401 display correctly under
+auto. None of the five samples contains accented letters, so the run provides
+no evidence about how auto renders accented letters in these families.
