@@ -8,6 +8,7 @@ venv
 
 # DATASUS fixtures are downloaded, not committed
 /test/data/
+/test/data/bench/
 /test/reference/
 
 # Research scratch: downloaded samples, third-party sources, proprietary-binary notes
