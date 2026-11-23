@@ -693,6 +693,9 @@ impl<R> fmt::Debug for DclReader<R> {
 
 /// Decompress a whole in-memory DCL stream (convenience for tests and
 /// small inputs). Trailing bytes after the end code are an error.
+///
+/// Memory is unbounded: a valid stream can expand a small input into
+/// hundreds of megabytes. Use [`DclReader`] for untrusted input.
 pub fn decompress_all(input: &[u8]) -> Result<Vec<u8>, DclError> {
     let mut r = DclReader::new(input);
     let mut out = Vec::new();
