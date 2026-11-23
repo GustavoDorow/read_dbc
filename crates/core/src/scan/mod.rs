@@ -45,7 +45,9 @@ use duckdb_neo::{
     types::{Any, DateValue, DecimalSignature, Map},
     value::Value,
 };
-use read_dbc_format::{ColumnType, DbcReader, Encoding, Header, ReadOptions, resolve_schema};
+use read_dbc_format::{
+    ColumnType, DbcReader, Encoding, Header, ReadOptions, TypeOverrideField, resolve_schema,
+};
 
 use self::schema::{Conv, FileSchema, OutColumn};
 use self::sink::{Buf, Sink, Slot, write_buf, write_nulls};
@@ -321,21 +323,7 @@ fn bind_scan(
         for (k, (key, t)) in overrides.iter().enumerate() {
             if let Some(i) = names.iter().position(|n| n.eq_ignore_ascii_case(key)) {
                 override_used[k] = true;
-                let original = &raw_names[i];
-                if raw_names
-                    .iter()
-                    .filter(|n| n.eq_ignore_ascii_case(original))
-                    .count()
-                    > 1
-                {
-                    return Err(file_err(
-                        path,
-                        format!(
-                            "types: cannot override \"{key}\": the file has several fields named \"{original}\""
-                        ),
-                    ));
-                }
-                file_types.push((original.clone(), *t));
+                file_types.push((TypeOverrideField::Index(i), *t));
             }
         }
         let options = ReadOptions {

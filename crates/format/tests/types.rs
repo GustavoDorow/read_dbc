@@ -488,12 +488,19 @@ fn type_overrides() {
 
     // Unknown field, unsupported conversion, duplicate override.
     for types in [
-        vec![("NOPE".to_string(), ColumnType::Date)],
-        vec![("VAL".to_string(), ColumnType::Date)],
-        vec![("NASC".to_string(), ColumnType::Boolean)],
+        vec![("NOPE".into(), ColumnType::Date)],
+        vec![("VAL".into(), ColumnType::Date)],
+        vec![("NASC".into(), ColumnType::Boolean)],
         vec![
-            ("NASC".to_string(), ColumnType::Date),
-            ("nasc".to_string(), ColumnType::Varchar),
+            ("NASC".into(), ColumnType::Date),
+            ("nasc".into(), ColumnType::Varchar),
+        ],
+        vec![
+            ("NASC".into(), ColumnType::Date),
+            (
+                read_dbc_format::TypeOverrideField::Index(0),
+                ColumnType::Date,
+            ),
         ],
     ] {
         let e = both(

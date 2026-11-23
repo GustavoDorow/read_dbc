@@ -60,6 +60,10 @@ override). Per-field overrides (`ReadOptions::types`): any field → VARCHAR;
 date is an error); `C` → BIGINT (strict integer); any field → its natural
 type.
 
+Select fields by their unique, case-insensitive header name (for example,
+`"COL".into()`) or their zero-based position (`TypeOverrideField::Index(1)`).
+Use the position when multiple fields share a header name.
+
 ## Encodings (`Encoding::Auto`)
 
 | LDID (header byte 29) | Encoding |

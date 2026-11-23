@@ -523,7 +523,8 @@ the 0x1A marker). Schema is known, no rows.
 ### `dupnames.dbc`
 
 Two fields both named `A`: C(3) → VARCHAR and N(3,0) → BIGINT; rows
-(`x`, 1), (`y`, 2). A type override naming `A` is ambiguous (error).
+(`x`, 1), (`y`, 2). Use index 1 in the Rust reader or the renamed output
+column `A_1` in SQL to override the second field.
 
 ### `layout_a.dbc` / `layout_b.dbc`
 

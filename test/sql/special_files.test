@@ -39,10 +39,24 @@ SELECT A_1 FROM read_dbc('test/fixtures/dupnames.dbc');
 1
 2
 
-statement error
-SELECT * FROM read_dbc('test/fixtures/dupnames.dbc', types := {'A_1': 'VARCHAR'});
+query TTT
+SELECT A, A_1, typeof(A_1) FROM read_dbc('test/fixtures/dupnames.dbc', types := {'a_1': 'VARCHAR'});
 ----
-types: cannot override "A_1": the file has several fields named "A"
+x	  1	VARCHAR
+y	  2	VARCHAR
+
+query TI
+SELECT A, A_1 FROM read_dbc('test/fixtures/dupnames.dbc', types := MAP {'A': 'VARCHAR'});
+----
+x	1
+y	2
+
+# Resolve output names independently for each file before unioning.
+query TT
+SELECT A, A_1 FROM read_dbc(['test/fixtures/dupnames.dbc', 'test/fixtures/empty.dbc'], union_by_name := true, types := {'A_1': 'VARCHAR'});
+----
+x	  1
+y	  2
 
 # Fields without a typed mapping are read as VARCHAR
 query TT

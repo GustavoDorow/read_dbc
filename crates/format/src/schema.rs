@@ -5,7 +5,7 @@ use std::fmt;
 
 use crate::error::{Error, Result};
 use crate::header::{Field, Header};
-use crate::options::ReadOptions;
+use crate::options::{ReadOptions, TypeOverrideField};
 
 /// Logical type of an output column.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
@@ -192,28 +192,36 @@ fn override_decoder(field: &Field, to: ColumnType) -> Option<Decoder> {
 /// usable natural type become VARCHAR with [`Column::fallback`] set.
 pub fn resolve_schema(header: &Header, options: &ReadOptions) -> Result<Vec<Column>> {
     let mut overrides: Vec<Option<ColumnType>> = vec![None; header.fields.len()];
-    for (name, to) in &options.types {
-        let matches: Vec<usize> = header
-            .fields
-            .iter()
-            .enumerate()
-            .filter(|(_, f)| f.name.eq_ignore_ascii_case(name))
-            .map(|(i, _)| i)
-            .collect();
-        let i = match matches.as_slice() {
-            [] => {
+    for (field, to) in &options.types {
+        let i = match field {
+            TypeOverrideField::Index(i) if *i < header.fields.len() => *i,
+            TypeOverrideField::Index(i) => {
                 return Err(Error::InvalidOption(format!(
-                    "type override for unknown field {name:?}"
+                    "type override field index {i} is out of range ({} fields)",
+                    header.fields.len()
                 )));
             }
-            [i] => *i,
-            _ => {
-                return Err(Error::InvalidOption(format!(
-                    "type override for {name:?} is ambiguous: several fields have that name"
-                )));
+            TypeOverrideField::Name(name) => {
+                let mut matches = header
+                    .fields
+                    .iter()
+                    .enumerate()
+                    .filter(|(_, f)| f.name.eq_ignore_ascii_case(name));
+                let Some((i, _)) = matches.next() else {
+                    return Err(Error::InvalidOption(format!(
+                        "type override for unknown field {name:?}"
+                    )));
+                };
+                if matches.next().is_some() {
+                    return Err(Error::InvalidOption(format!(
+                        "type override for {name:?} is ambiguous: several fields have that name"
+                    )));
+                }
+                i
             }
         };
         if overrides[i].is_some() {
+            let name = &header.fields[i].name;
             return Err(Error::InvalidOption(format!(
                 "field {name:?} has more than one type override"
             )));

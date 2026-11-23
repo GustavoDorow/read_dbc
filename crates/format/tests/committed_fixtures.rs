@@ -9,7 +9,8 @@ use std::path::PathBuf;
 
 use read_dbc_format::{
     ColumnBuffers, ColumnType, CrcStatus, DbcReader, Encoding, Error, FallbackReason, Header,
-    OwnedValue as V, ReadOptions, Summary, resolve_schema, values::days_from_civil,
+    OwnedValue as V, ReadOptions, Summary, TypeOverrideField, resolve_schema,
+    values::days_from_civil,
 };
 
 fn dir() -> PathBuf {
@@ -404,7 +405,32 @@ fn duplicate_names() {
             ..Default::default()
         },
     );
-    assert!(matches!(e, Err(Error::InvalidOption(_))));
+    assert!(matches!(e, Err(Error::InvalidOption(msg)) if msg.contains("ambiguous")));
+}
+
+#[test]
+fn duplicate_names_can_be_overridden_by_index() {
+    let r = read_with(
+        "dupnames.dbc",
+        ReadOptions {
+            types: vec![(TypeOverrideField::Index(1), ColumnType::Varchar)],
+            ..Default::default()
+        },
+    )
+    .unwrap();
+    assert_eq!(r.names, ["A", "A"]);
+    assert_eq!(r.types, [ColumnType::Varchar, ColumnType::Varchar]);
+    assert_eq!(r.buf.columns[0], [t("x"), t("y")]);
+    assert_eq!(r.buf.columns[1], [t("  1"), t("  2")]);
+
+    let e = read_with(
+        "dupnames.dbc",
+        ReadOptions {
+            types: vec![(TypeOverrideField::Index(2), ColumnType::Varchar)],
+            ..Default::default()
+        },
+    );
+    assert!(matches!(e, Err(Error::InvalidOption(msg)) if msg.contains("index 2 is out of range")));
 }
 
 #[test]

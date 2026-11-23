@@ -70,7 +70,8 @@ verify_crc := true, types := NULL, union_by_name := false, filename := false)`
 Types come from the header: `C` → VARCHAR, `N` without decimals (width ≤ 18) →
 BIGINT, other `N`/`F` → DECIMAL(width, decimals), `D` → DATE, `L` → BOOLEAN,
 anything else → VARCHAR (see `crates/format/README.md`). Duplicate field names
-are renamed `A`, `A_1`, `A_2`, ... like `read_csv`.
+are renamed `A`, `A_1`, `A_2`, ... like `read_csv`. Use these output names
+in `types` to target individual fields, for example `types := {'A_1': 'VARCHAR'}`.
 
 **Several files.** Without `union_by_name`, all files must have the same column
 names (case-insensitive) and types in the same order. With it, columns are

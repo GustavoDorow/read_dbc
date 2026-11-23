@@ -132,7 +132,7 @@ pub use dcl::{BlastError, DclError, DclReader};
 pub use encoding::{DecodeError, Encoding};
 pub use error::{Error, Result};
 pub use header::{Field, Header, SUPPORTED_VERSIONS};
-pub use options::ReadOptions;
+pub use options::{ReadOptions, TypeOverrideField};
 pub use reader::{
     BatchSink, ColumnBuffers, CrcStatus, DbcReader, Format, MIN_RECORDS_PER_BATCH, OwnedValue,
     Progress, RawRecord, Summary, Value,
