@@ -1,0 +1,3747 @@
+{
+  "reps": 5,
+  "system": {
+    "timestamp_utc": "2026-11-23T11:46:20Z",
+    "hardware": {
+      "cpu_model": "AMD Ryzen 5 5600 6-Core Processor",
+      "physical_cores": 6,
+      "logical_cpus": 12,
+      "ram_bytes": 33518972928,
+      "disk_lsblk": "NAME    MODEL             ROTA   SIZE TRAN\nzram0                        0  31.2G \nnvme1n1 Fanxiang S790 1TB    0 931.5G nvme\nnvme0n1 XrayDisk 1TB SSD     0 953.9G nvme",
+      "bench_fs": "Filesystem       Type   Size  Used Avail Use% Mounted on\n/dev/mapper/root btrfs  952G  644G  276G  71% /home",
+      "os": "Omarchy",
+      "kernel": "7.2.15-1-omarchy",
+      "arch": "x86_64"
+    },
+    "software": {
+      "git_commit": "110f0d8f61c2bfd94c5d7b7a147adc5b208048a6",
+      "git_branch": "t3/read-dbc-benchmark",
+      "read_dbc_version": "0.1.0",
+      "rustc": "rustc 1.98.0 (88d9e12ae 2026-08-18)",
+      "uv": "uv 0.13.9 (x86_64-unknown-linux-gnu)",
+      "python": "3.13.15",
+      "duckdb": "2.0.1",
+      "dbfread": "2.0.7",
+      "pyreaddbc": "2.0.4",
+      "pandas": "3.1.1",
+      "pyarrow": "23.0.1",
+      "psutil": "7.2.2",
+      "datasus_dbc_crate": "0.1.1",
+      "datasus_cli": "datasus 0.1.0",
+      "pysus_worker": {
+        "pysus": "2.12.2",
+        "duckdb": "1.5.6",
+        "pandas": "2.3.3",
+        "python": "3.13.15"
+      }
+    }
+  },
+  "files": {
+    "RDAC2601": {
+      "name": "RDAC2601",
+      "size_tier": "small",
+      "rel_path": "test/data/RDAC2601.dbc",
+      "sha256": "385882b4dfa475a4823f734afd553622928c5076996e6fec320613bbb0b6d3e0",
+      "dbc_bytes": 345308,
+      "dbf_bytes": 3364577,
+      "parquet_bytes": 221009,
+      "rows": 4774,
+      "columns": 114,
+      "agg_groups": 54,
+      "agg_val_tot_sum": "4636392.19"
+    },
+    "RDSC2501": {
+      "name": "RDSC2501",
+      "size_tier": "medium",
+      "rel_path": "test/data/RDSC2501.dbc",
+      "sha256": "00d5831a83bea9d748b9d42e0ffcec892db99db5638c388e355e5b9139ab4810",
+      "dbc_bytes": 4244720,
+      "dbf_bytes": 37652611,
+      "parquet_bytes": 2291037,
+      "rows": 53631,
+      "columns": 113,
+      "agg_groups": 499,
+      "agg_val_tot_sum": "119781839.18"
+    },
+    "RDSP2501": {
+      "name": "RDSP2501",
+      "size_tier": "large",
+      "rel_path": "test/data/bench/RDSP2501.dbc",
+      "sha256": "33f811186a6a4dfa377cea2b75e739a7b1316c516d8895473af4c3685a095553",
+      "dbc_bytes": 18808966,
+      "dbf_bytes": 167180737,
+      "parquet_bytes": 9550506,
+      "rows": 238144,
+      "columns": 113,
+      "agg_groups": 1354,
+      "agg_val_tot_sum": "435555819.75"
+    }
+  },
+  "summary": [
+    {
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "description": "read_dbc direct: SELECT * streamed (Arrow 2048-row batches)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.08202247599547263,
+      "first_row_min_s": 0.07141978299478069,
+      "total_median_s": 0.08341454400215298,
+      "total_min_s": 0.07669367399648763,
+      "peak_rss_median_mib": 139.48046875,
+      "peak_rss_min_mib": 134.640625,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "description": "read_dbc direct: CREATE TABLE AS SELECT *",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.10024951900413726,
+      "first_row_min_s": 0.09417679699254222,
+      "total_median_s": 0.10024951900413726,
+      "total_min_s": 0.09417679699254222,
+      "peak_rss_median_mib": 114.87890625,
+      "peak_rss_min_mib": 107.77734375,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "description": "read_dbc direct: SELECT count(*)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.03695767400495242,
+      "first_row_min_s": 0.03537047600548249,
+      "total_median_s": 0.03695767400495242,
+      "total_min_s": 0.03537047600548249,
+      "peak_rss_median_mib": 89.98828125,
+      "peak_rss_min_mib": 88.02734375,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "description": "read_dbc direct: SELECT MUNIC_RES, sum(VAL_TOT) GROUP BY 1",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.03900641101063229,
+      "first_row_min_s": 0.03812714300875086,
+      "total_median_s": 0.03900641101063229,
+      "total_min_s": 0.03812714300875086,
+      "peak_rss_median_mib": 107.484375,
+      "peak_rss_min_mib": 103.76953125,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "description": "datasus-dbc (.dbc->.dbf) -> dbfread list[dict] -> Arrow -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 1.1222268370038364,
+      "first_row_min_s": 0.9439722450042609,
+      "total_median_s": 1.1222268370038364,
+      "total_min_s": 0.9439722450042609,
+      "peak_rss_median_mib": 280.39453125,
+      "peak_rss_min_mib": 274.55078125,
+      "disk_write_median_bytes": 3364577,
+      "disk_write_min_bytes": 3364577,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "description": "pyreaddbc (.dbc->.dbf) -> dbfread -> pandas DataFrame -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.7170050170097966,
+      "first_row_min_s": 0.5192705869994825,
+      "total_median_s": 0.7170050170097966,
+      "total_min_s": 0.5192705869994825,
+      "peak_rss_median_mib": 213.76171875,
+      "peak_rss_min_mib": 213.23046875,
+      "disk_write_median_bytes": 3364577,
+      "disk_write_min_bytes": 3364577,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "description": "PySUS 2.12.2 (DBC.load -> pandas DataFrame) -> DuckDB 1.5.6 table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.7402381830033846,
+      "first_row_min_s": 0.6317920469882665,
+      "total_median_s": 0.7402381830033846,
+      "total_min_s": 0.6317920469882665,
+      "peak_rss_median_mib": 361.56640625,
+      "peak_rss_min_mib": 350.09375,
+      "disk_write_median_bytes": 3683775,
+      "disk_write_min_bytes": 3683775,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "description": "datasus-dbc (.dbc->.dbf) -> DuckDB community read_dbf",
+      "status": "skipped",
+      "reps_ok": 0,
+      "reps_failed": 0,
+      "first_row_median_s": null,
+      "first_row_min_s": null,
+      "total_median_s": null,
+      "total_min_s": null,
+      "peak_rss_median_mib": null,
+      "peak_rss_min_mib": null,
+      "disk_write_median_bytes": null,
+      "disk_write_min_bytes": null,
+      "note": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf"
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet streamed",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.09853927099902648,
+      "first_row_min_s": 0.08828166700550355,
+      "total_median_s": 0.09904471000481863,
+      "total_min_s": 0.08874310599640012,
+      "peak_rss_median_mib": 141.6015625,
+      "peak_rss_min_mib": 135.66015625,
+      "disk_write_median_bytes": 221009,
+      "disk_write_min_bytes": 221009,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB CREATE TABLE read_parquet",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.12815402600972448,
+      "first_row_min_s": 0.12576522999734152,
+      "total_median_s": 0.12815402600972448,
+      "total_min_s": 0.12576522999734152,
+      "peak_rss_median_mib": 129.66796875,
+      "peak_rss_min_mib": 122.11328125,
+      "disk_write_median_bytes": 221009,
+      "disk_write_min_bytes": 221009,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.0923701600113418,
+      "first_row_min_s": 0.09032972301065456,
+      "total_median_s": 0.0923701600113418,
+      "total_min_s": 0.09032972301065456,
+      "peak_rss_median_mib": 117.09765625,
+      "peak_rss_min_mib": 109.078125,
+      "disk_write_median_bytes": 221009,
+      "disk_write_min_bytes": 221009,
+      "note": ""
+    },
+    {
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "description": "Pre-converted Parquet (warm) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.03388701900257729,
+      "first_row_min_s": 0.03266341099515557,
+      "total_median_s": 0.03388701900257729,
+      "total_min_s": 0.03266341099515557,
+      "peak_rss_median_mib": 125.09765625,
+      "peak_rss_min_mib": 118.94921875,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "description": "read_dbc direct: SELECT * streamed (Arrow 2048-row batches)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.13729354200768284,
+      "first_row_min_s": 0.08443888300098479,
+      "total_median_s": 0.44343142000434455,
+      "total_min_s": 0.4322060650010826,
+      "peak_rss_median_mib": 159.21875,
+      "peak_rss_min_mib": 147.25,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "description": "read_dbc direct: CREATE TABLE AS SELECT *",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.6546369279967621,
+      "first_row_min_s": 0.6337787429947639,
+      "total_median_s": 0.6546369279967621,
+      "total_min_s": 0.6337787429947639,
+      "peak_rss_median_mib": 240.58984375,
+      "peak_rss_min_mib": 232.41015625,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "description": "read_dbc direct: SELECT count(*)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.09966322900436353,
+      "first_row_min_s": 0.09630322399607394,
+      "total_median_s": 0.09966322900436353,
+      "total_min_s": 0.09630322399607394,
+      "peak_rss_median_mib": 90.05859375,
+      "peak_rss_min_mib": 87.98046875,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "description": "read_dbc direct: SELECT MUNIC_RES, sum(VAL_TOT) GROUP BY 1",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.10429831199871842,
+      "first_row_min_s": 0.10054341799695976,
+      "total_median_s": 0.10429831199871842,
+      "total_min_s": 0.10054341799695976,
+      "peak_rss_median_mib": 113.671875,
+      "peak_rss_min_mib": 109.57421875,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "description": "datasus-dbc (.dbc->.dbf) -> dbfread list[dict] -> Arrow -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 9.052382261987077,
+      "first_row_min_s": 8.071561624004971,
+      "total_median_s": 9.052382261987077,
+      "total_min_s": 8.071561624004971,
+      "peak_rss_median_mib": 1012.75390625,
+      "peak_rss_min_mib": 1007.85546875,
+      "disk_write_median_bytes": 37652611,
+      "disk_write_min_bytes": 37652611,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "description": "pyreaddbc (.dbc->.dbf) -> dbfread -> pandas DataFrame -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 6.669577767999726,
+      "first_row_min_s": 5.81236025999533,
+      "total_median_s": 6.669577767999726,
+      "total_min_s": 5.81236025999533,
+      "peak_rss_median_mib": 985.65234375,
+      "peak_rss_min_mib": 985.4375,
+      "disk_write_median_bytes": 37652611,
+      "disk_write_min_bytes": 37652611,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "description": "PySUS 2.12.2 (DBC.load -> pandas DataFrame) -> DuckDB 1.5.6 table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 7.0440744849911425,
+      "first_row_min_s": 6.784700591000728,
+      "total_median_s": 7.0440744849911425,
+      "total_min_s": 6.784700591000728,
+      "peak_rss_median_mib": 683.5703125,
+      "peak_rss_min_mib": 673.7578125,
+      "disk_write_median_bytes": 40769143,
+      "disk_write_min_bytes": 40769143,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "description": "datasus-dbc (.dbc->.dbf) -> DuckDB community read_dbf",
+      "status": "skipped",
+      "reps_ok": 0,
+      "reps_failed": 0,
+      "first_row_median_s": null,
+      "first_row_min_s": null,
+      "total_median_s": null,
+      "total_min_s": null,
+      "peak_rss_median_mib": null,
+      "peak_rss_min_mib": null,
+      "disk_write_median_bytes": null,
+      "disk_write_min_bytes": null,
+      "note": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf"
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet streamed",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.5605416199978208,
+      "first_row_min_s": 0.47920521401101723,
+      "total_median_s": 0.6271198689937592,
+      "total_min_s": 0.5301273170043714,
+      "peak_rss_median_mib": 195.6484375,
+      "peak_rss_min_mib": 187.83984375,
+      "disk_write_median_bytes": 2291037,
+      "disk_write_min_bytes": 2291037,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB CREATE TABLE read_parquet",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.8785757609875873,
+      "first_row_min_s": 0.7409209039906273,
+      "total_median_s": 0.8785757609875873,
+      "total_min_s": 0.7409209039906273,
+      "peak_rss_median_mib": 246.37890625,
+      "peak_rss_min_mib": 240.296875,
+      "disk_write_median_bytes": 2291037,
+      "disk_write_min_bytes": 2291037,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.5771509329933906,
+      "first_row_min_s": 0.5704973630054155,
+      "total_median_s": 0.5771509329933906,
+      "total_min_s": 0.5704973630054155,
+      "peak_rss_median_mib": 125.73828125,
+      "peak_rss_min_mib": 125.625,
+      "disk_write_median_bytes": 2291037,
+      "disk_write_min_bytes": 2291037,
+      "note": ""
+    },
+    {
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "description": "Pre-converted Parquet (warm) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.033480418991530314,
+      "first_row_min_s": 0.03327769000316039,
+      "total_median_s": 0.033480418991530314,
+      "total_min_s": 0.03327769000316039,
+      "peak_rss_median_mib": 115.26953125,
+      "peak_rss_min_mib": 111.15234375,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "description": "read_dbc direct: SELECT * streamed (Arrow 2048-row batches)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.09872171899769455,
+      "first_row_min_s": 0.08970776399655733,
+      "total_median_s": 1.0349414059892297,
+      "total_min_s": 1.0052220359939383,
+      "peak_rss_median_mib": 168.109375,
+      "peak_rss_min_mib": 158.625,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "description": "read_dbc direct: CREATE TABLE AS SELECT *",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 1.2998733169952175,
+      "first_row_min_s": 1.1364941609936068,
+      "total_median_s": 1.2998733169952175,
+      "total_min_s": 1.1364941609936068,
+      "peak_rss_median_mib": 361.44140625,
+      "peak_rss_min_mib": 354.765625,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "description": "read_dbc direct: SELECT count(*)",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.2792609819880454,
+      "first_row_min_s": 0.22648785199271515,
+      "total_median_s": 0.2792609819880454,
+      "total_min_s": 0.22648785199271515,
+      "peak_rss_median_mib": 86.09765625,
+      "peak_rss_min_mib": 84.1796875,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "description": "read_dbc direct: SELECT MUNIC_RES, sum(VAL_TOT) GROUP BY 1",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.33858036299352534,
+      "first_row_min_s": 0.2423707380075939,
+      "total_median_s": 0.33858036299352534,
+      "total_min_s": 0.2423707380075939,
+      "peak_rss_median_mib": 114.078125,
+      "peak_rss_min_mib": 106.1015625,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "description": "datasus-dbc (.dbc->.dbf) -> dbfread list[dict] -> Arrow -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 31.129731277993415,
+      "first_row_min_s": 28.525956747995224,
+      "total_median_s": 31.129731277993415,
+      "total_min_s": 28.525956747995224,
+      "peak_rss_median_mib": 3386.95703125,
+      "peak_rss_min_mib": 3373.05859375,
+      "disk_write_median_bytes": 167180737,
+      "disk_write_min_bytes": 167180737,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "description": "pyreaddbc (.dbc->.dbf) -> dbfread -> pandas DataFrame -> DuckDB table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 20.72195921499224,
+      "first_row_min_s": 20.49765644800209,
+      "total_median_s": 20.72195921499224,
+      "total_min_s": 20.49765644800209,
+      "peak_rss_median_mib": 3803.27734375,
+      "peak_rss_min_mib": 3802.8828125,
+      "disk_write_median_bytes": 167180737,
+      "disk_write_min_bytes": 167180737,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "description": "PySUS 2.12.2 (DBC.load -> pandas DataFrame) -> DuckDB 1.5.6 table",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 16.725814355988405,
+      "first_row_min_s": 16.56895886300481,
+      "total_median_s": 16.725814355988405,
+      "total_min_s": 16.56895886300481,
+      "peak_rss_median_mib": 1356.78515625,
+      "peak_rss_min_mib": 1329.015625,
+      "disk_write_median_bytes": 180915882,
+      "disk_write_min_bytes": 180915882,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "description": "datasus-dbc (.dbc->.dbf) -> DuckDB community read_dbf",
+      "status": "skipped",
+      "reps_ok": 0,
+      "reps_failed": 0,
+      "first_row_median_s": null,
+      "first_row_min_s": null,
+      "total_median_s": null,
+      "total_min_s": null,
+      "peak_rss_median_mib": null,
+      "peak_rss_min_mib": null,
+      "disk_write_median_bytes": null,
+      "disk_write_min_bytes": null,
+      "note": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf"
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet streamed",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 1.458554719996755,
+      "first_row_min_s": 1.4188305790012237,
+      "total_median_s": 1.6991096609999659,
+      "total_min_s": 1.650706343993079,
+      "peak_rss_median_mib": 310.8671875,
+      "peak_rss_min_mib": 301.921875,
+      "disk_write_median_bytes": 9550506,
+      "disk_write_min_bytes": 9550506,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB CREATE TABLE read_parquet",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 1.7460355460061692,
+      "first_row_min_s": 1.7332858869922347,
+      "total_median_s": 1.7460355460061692,
+      "total_min_s": 1.7332858869922347,
+      "peak_rss_median_mib": 348.61328125,
+      "peak_rss_min_mib": 343.87890625,
+      "disk_write_median_bytes": 9550506,
+      "disk_write_min_bytes": 9550506,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "description": "datasus CLI (.dbc->Parquet) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 1.3995365709997714,
+      "first_row_min_s": 1.39065176800068,
+      "total_median_s": 1.3995365709997714,
+      "total_min_s": 1.39065176800068,
+      "peak_rss_median_mib": 301.77734375,
+      "peak_rss_min_mib": 301.63671875,
+      "disk_write_median_bytes": 9550506,
+      "disk_write_min_bytes": 9550506,
+      "note": ""
+    },
+    {
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "description": "Pre-converted Parquet (warm) -> DuckDB read_parquet GROUP BY agg",
+      "status": "ok",
+      "reps_ok": 5,
+      "reps_failed": 0,
+      "first_row_median_s": 0.02558298100484535,
+      "first_row_min_s": 0.024979492009151727,
+      "total_median_s": 0.02558298100484535,
+      "total_min_s": 0.024979492009151727,
+      "peak_rss_median_mib": 112.23046875,
+      "peak_rss_min_mib": 109.8125,
+      "disk_write_median_bytes": 0,
+      "disk_write_min_bytes": 0,
+      "note": ""
+    }
+  ],
+  "runs": [
+    {
+      "status": "ok",
+      "first_row_s": 0.08021959899633657,
+      "total_s": 0.08068124899000395,
+      "peak_rss_bytes": 146255872,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 146255872,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10024951900413726,
+      "total_s": 0.10024951900413726,
+      "peak_rss_bytes": 113012736,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 113012736,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.036274575992138125,
+      "total_s": 0.036274575992138125,
+      "peak_rss_bytes": 92364800,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "self_vmhwm_bytes": 92364800,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03812714300875086,
+      "total_s": 0.03812714300875086,
+      "peak_rss_bytes": 112705536,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": "4636392.19",
+        "self_vmhwm_bytes": 112705536,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1533952799945837,
+      "total_s": 1.1533952799945837,
+      "peak_rss_bytes": 298401792,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.29238131899910513,
+        "dbfread_s": 0.48872269300045446,
+        "duckdb_load_s": 0.3722912679950241,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 298401792,
+        "child_maxrss_bytes": 92266496
+      },
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6464005949965212,
+      "total_s": 0.6464005949965212,
+      "peak_rss_bytes": 224145408,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.008475676993839443,
+        "dbfread_pandas_s": 0.5603116150014102,
+        "duckdb_load_s": 0.07761330300127156,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 224145408,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6317920469882665,
+      "total_s": 0.6317920469882665,
+      "peak_rss_bytes": 382287872,
+      "disk_write_bytes": 3683775,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 0.5496154509892222,
+        "duckdb_load_s": 0.08217659599904437,
+        "self_vmhwm_bytes": 382287872,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 3364577,
+        "parquet_bytes": 319198,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999996
+      },
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "rep": 1
+    },
+    {
+      "status": "skipped",
+      "error": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf",
+      "file": "RDAC2601",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.11617229499097448,
+      "total_s": 0.11662902399257291,
+      "peak_rss_bytes": 148480000,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "details": {
+        "convert_s": 0.0657498009968549,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 148480000,
+        "child_maxrss_bytes": 92033024
+      },
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.12576522999734152,
+      "total_s": 0.12576522999734152,
+      "peak_rss_bytes": 130478080,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.055199167007231154,
+        "duckdb_load_s": 0.07056606299011037,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 130478080,
+        "child_maxrss_bytes": 48631808
+      },
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09622383500391152,
+      "total_s": 0.09622383500391152,
+      "peak_rss_bytes": 114376704,
+      "disk_write_bytes": 221009,
+      "rows_verified": 54,
+      "details": {
+        "convert_s": 0.05761590300244279,
+        "query_s": 0.038607932001468726,
+        "parquet_bytes": 221009,
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "self_vmhwm_bytes": 114376704,
+        "child_maxrss_bytes": 48537600
+      },
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03266341099515557,
+      "total_s": 0.03266341099515557,
+      "peak_rss_bytes": 124764160,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "cached_parquet_bytes": 221009,
+        "self_vmhwm_bytes": 124764160,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08202247599547263,
+      "total_s": 0.08598022999649402,
+      "peak_rss_bytes": 148623360,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 148623360,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10352283300017007,
+      "total_s": 0.10352283300017007,
+      "peak_rss_bytes": 120459264,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 120459264,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03695767400495242,
+      "total_s": 0.03695767400495242,
+      "peak_rss_bytes": 92303360,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "self_vmhwm_bytes": 92303360,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.038399691999075,
+      "total_s": 0.038399691999075,
+      "peak_rss_bytes": 127672320,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": "4636392.19",
+        "self_vmhwm_bytes": 127672320,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1222268370038364,
+      "total_s": 1.1222268370038364,
+      "peak_rss_bytes": 294014976,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.2851685399946291,
+        "dbfread_s": 0.4934128849999979,
+        "duckdb_load_s": 0.3436454120092094,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 294014976,
+        "child_maxrss_bytes": 92426240
+      },
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5192705869994825,
+      "total_s": 0.5192705869994825,
+      "peak_rss_bytes": 224964608,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.008403897008975036,
+        "dbfread_pandas_s": 0.4546920339926146,
+        "duckdb_load_s": 0.05617465599789284,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 224964608,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7324476549983956,
+      "total_s": 0.7324476549983956,
+      "peak_rss_bytes": 379129856,
+      "disk_write_bytes": 3683775,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 0.6107965179980965,
+        "duckdb_load_s": 0.12165113700029906,
+        "self_vmhwm_bytes": 379129856,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 3364577,
+        "parquet_bytes": 319198,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999996
+      },
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10595145000843331,
+      "total_s": 0.10647602900280617,
+      "peak_rss_bytes": 146440192,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "details": {
+        "convert_s": 0.05876447100308724,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 146440192,
+        "child_maxrss_bytes": 91955200
+      },
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.13091499199799728,
+      "total_s": 0.13091499199799728,
+      "peak_rss_bytes": 136458240,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.05392835800012108,
+        "duckdb_load_s": 0.0769866339978762,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 136458240,
+        "child_maxrss_bytes": 48619520
+      },
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09032972301065456,
+      "total_s": 0.09032972301065456,
+      "peak_rss_bytes": 122781696,
+      "disk_write_bytes": 221009,
+      "rows_verified": 54,
+      "details": {
+        "convert_s": 0.0554865960002644,
+        "query_s": 0.03484312701039016,
+        "parquet_bytes": 221009,
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "self_vmhwm_bytes": 122781696,
+        "child_maxrss_bytes": 48607232
+      },
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03303963999496773,
+      "total_s": 0.03303963999496773,
+      "peak_rss_bytes": 124727296,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "cached_parquet_bytes": 221009,
+        "self_vmhwm_bytes": 124727296,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.07141978299478069,
+      "total_s": 0.07669367399648763,
+      "peak_rss_bytes": 149323776,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 149323776,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09417679699254222,
+      "total_s": 0.09417679699254222,
+      "peak_rss_bytes": 117301248,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 117301248,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03696282400051132,
+      "total_s": 0.03696282400051132,
+      "peak_rss_bytes": 94420992,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "self_vmhwm_bytes": 94420992,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03900641101063229,
+      "total_s": 0.03900641101063229,
+      "peak_rss_bytes": 108810240,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": "4636392.19",
+        "self_vmhwm_bytes": 108810240,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1008435580006335,
+      "total_s": 1.1008435580006335,
+      "peak_rss_bytes": 287887360,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.2970885810063919,
+        "dbfread_s": 0.4701182509888895,
+        "duckdb_load_s": 0.3336367260053521,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 287887360,
+        "child_maxrss_bytes": 92180480
+      },
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7197254939965205,
+      "total_s": 0.7197254939965205,
+      "peak_rss_bytes": 231346176,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.011511201999383047,
+        "dbfread_pandas_s": 0.6312057080067461,
+        "duckdb_load_s": 0.07700858399039134,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 231346176,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7490111299994169,
+      "total_s": 0.7490111299994169,
+      "peak_rss_bytes": 367099904,
+      "disk_write_bytes": 3683775,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 0.6445232679980109,
+        "duckdb_load_s": 0.10448786200140603,
+        "self_vmhwm_bytes": 367099904,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 3364577,
+        "parquet_bytes": 319198,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999996
+      },
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08828166700550355,
+      "total_s": 0.08874310599640012,
+      "peak_rss_bytes": 152526848,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "details": {
+        "convert_s": 0.05106870300369337,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 152526848,
+        "child_maxrss_bytes": 92024832
+      },
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.13315868900099304,
+      "total_s": 0.13315868900099304,
+      "peak_rss_bytes": 140124160,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.05533905699849129,
+        "duckdb_load_s": 0.07781963200250175,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 140124160,
+        "child_maxrss_bytes": 48570368
+      },
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.0923701600113418,
+      "total_s": 0.0923701600113418,
+      "peak_rss_bytes": 122785792,
+      "disk_write_bytes": 221009,
+      "rows_verified": 54,
+      "details": {
+        "convert_s": 0.05533761600963771,
+        "query_s": 0.03703254400170408,
+        "parquet_bytes": 221009,
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "self_vmhwm_bytes": 122785792,
+        "child_maxrss_bytes": 48652288
+      },
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03388701900257729,
+      "total_s": 0.03388701900257729,
+      "peak_rss_bytes": 131190784,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "cached_parquet_bytes": 221009,
+        "self_vmhwm_bytes": 131190784,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08264383499044925,
+      "total_s": 0.08341454400215298,
+      "peak_rss_bytes": 144351232,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 144351232,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.100616417999845,
+      "total_s": 0.100616417999845,
+      "peak_rss_bytes": 127516672,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 127516672,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03537047600548249,
+      "total_s": 0.03537047600548249,
+      "peak_rss_bytes": 94404608,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "self_vmhwm_bytes": 94404608,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.039108530996600166,
+      "total_s": 0.039108530996600166,
+      "peak_rss_bytes": 119377920,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": "4636392.19",
+        "self_vmhwm_bytes": 119377920,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.9439722450042609,
+      "total_s": 0.9439722450042609,
+      "peak_rss_bytes": 293675008,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.28557461900345515,
+        "dbfread_s": 0.3896869720047107,
+        "duckdb_load_s": 0.26871065399609506,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 293675008,
+        "child_maxrss_bytes": 92295168
+      },
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7266650829988066,
+      "total_s": 0.7266650829988066,
+      "peak_rss_bytes": 223588352,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.01160570299543906,
+        "dbfread_pandas_s": 0.635200081000221,
+        "duckdb_load_s": 0.07985929900314659,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 223588352,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7402381830033846,
+      "total_s": 0.7402381830033846,
+      "peak_rss_bytes": 379691008,
+      "disk_write_bytes": 3683775,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 0.6285474409960443,
+        "duckdb_load_s": 0.1116907420073403,
+        "self_vmhwm_bytes": 379691008,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 3364577,
+        "parquet_bytes": 319198,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999996
+      },
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09853927099902648,
+      "total_s": 0.09904471000481863,
+      "peak_rss_bytes": 151719936,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "details": {
+        "convert_s": 0.05440239800373092,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 151719936,
+        "child_maxrss_bytes": 92073984
+      },
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.12786428698746022,
+      "total_s": 0.12786428698746022,
+      "peak_rss_bytes": 128045056,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.05561519598995801,
+        "duckdb_load_s": 0.07224909099750221,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 128045056,
+        "child_maxrss_bytes": 48570368
+      },
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09703135299787391,
+      "total_s": 0.09703135299787391,
+      "peak_rss_bytes": 124899328,
+      "disk_write_bytes": 221009,
+      "rows_verified": 54,
+      "details": {
+        "convert_s": 0.06087514798855409,
+        "query_s": 0.03615620500931982,
+        "parquet_bytes": 221009,
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "self_vmhwm_bytes": 124899328,
+        "child_maxrss_bytes": 48660480
+      },
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.034299277991522104,
+      "total_s": 0.034299277991522104,
+      "peak_rss_bytes": 131174400,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "cached_parquet_bytes": 221009,
+        "self_vmhwm_bytes": 131174400,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08294589500292204,
+      "total_s": 0.08388933399692178,
+      "peak_rss_bytes": 141180928,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 141180928,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09831502100860234,
+      "total_s": 0.09831502100860234,
+      "peak_rss_bytes": 120795136,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 120795136,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03720991298905574,
+      "total_s": 0.03720991298905574,
+      "peak_rss_bytes": 94359552,
+      "disk_write_bytes": 0,
+      "rows_verified": 4774,
+      "details": {
+        "self_vmhwm_bytes": 94359552,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_count",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.04951645499386359,
+      "total_s": 0.04951645499386359,
+      "peak_rss_bytes": 110624768,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": "4636392.19",
+        "self_vmhwm_bytes": 110624768,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "A_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1350671169930138,
+      "total_s": 1.1350671169930138,
+      "peak_rss_bytes": 295485440,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.32591448799939826,
+        "dbfread_s": 0.4753410929988604,
+        "duckdb_load_s": 0.3338115359947551,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 295485440,
+        "child_maxrss_bytes": 92323840
+      },
+      "file": "RDAC2601",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7170050170097966,
+      "total_s": 0.7170050170097966,
+      "peak_rss_bytes": 223866880,
+      "disk_write_bytes": 3364577,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.011581212005694397,
+        "dbfread_pandas_s": 0.628168901996105,
+        "duckdb_load_s": 0.0772549030079972,
+        "dbf_bytes": 3364577,
+        "self_vmhwm_bytes": 223866880,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7486725190101424,
+      "total_s": 0.7486725190101424,
+      "peak_rss_bytes": 371191808,
+      "disk_write_bytes": 3683775,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 0.6437779679981759,
+        "duckdb_load_s": 0.10489455101196654,
+        "self_vmhwm_bytes": 371191808,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 3364577,
+        "parquet_bytes": 319198,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995
+      },
+      "file": "RDAC2601",
+      "workflow": "C2_pysus_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09195678099058568,
+      "total_s": 0.09242211999662686,
+      "peak_rss_bytes": 142249984,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "details": {
+        "convert_s": 0.04496113199274987,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 142249984,
+        "child_maxrss_bytes": 92098560
+      },
+      "file": "RDAC2601",
+      "workflow": "E_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.12815402600972448,
+      "total_s": 0.12815402600972448,
+      "peak_rss_bytes": 135966720,
+      "disk_write_bytes": 221009,
+      "rows_verified": 4774,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.05413098800636362,
+        "duckdb_load_s": 0.07402303800336085,
+        "parquet_bytes": 221009,
+        "self_vmhwm_bytes": 135966720,
+        "child_maxrss_bytes": 48578560
+      },
+      "file": "RDAC2601",
+      "workflow": "E_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09191365099104587,
+      "total_s": 0.09191365099104587,
+      "peak_rss_bytes": 124874752,
+      "disk_write_bytes": 221009,
+      "rows_verified": 54,
+      "details": {
+        "convert_s": 0.058284382001147605,
+        "query_s": 0.033629268989898264,
+        "parquet_bytes": 221009,
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "self_vmhwm_bytes": 124874752,
+        "child_maxrss_bytes": 48652288
+      },
+      "file": "RDAC2601",
+      "workflow": "E_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03474542799813207,
+      "total_s": 0.03474542799813207,
+      "peak_rss_bytes": 131211264,
+      "disk_write_bytes": 0,
+      "rows_verified": 54,
+      "details": {
+        "agg_groups": 54,
+        "agg_val_tot_sum": 4636392.189999995,
+        "cached_parquet_bytes": 221009,
+        "self_vmhwm_bytes": 131211264,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDAC2601",
+      "workflow": "E_cached_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08443888300098479,
+      "total_s": 0.434737003990449,
+      "peak_rss_bytes": 154402816,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 154402816,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6337787429947639,
+      "total_s": 0.6337787429947639,
+      "peak_rss_bytes": 264925184,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 264925184,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10243360500317067,
+      "total_s": 0.10243360500317067,
+      "peak_rss_bytes": 98639872,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "self_vmhwm_bytes": 98639872,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10054341799695976,
+      "total_s": 0.10054341799695976,
+      "peak_rss_bytes": 119193600,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": "119781839.18",
+        "self_vmhwm_bytes": 119193600,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 9.712961975004873,
+      "total_s": 9.712961975004873,
+      "peak_rss_bytes": 1064800256,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 3.5001420019980287,
+        "dbfread_s": 4.588860967007349,
+        "duckdb_load_s": 1.6239590059994953,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1064800256,
+        "child_maxrss_bytes": 92209152
+      },
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.669577767999726,
+      "total_s": 6.669577767999726,
+      "peak_rss_bytes": 1033830400,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.13645126299525145,
+        "dbfread_pandas_s": 6.130184744004509,
+        "duckdb_load_s": 0.4029417609999655,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1033830400,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 7.120524762998684,
+      "total_s": 7.120524762998684,
+      "peak_rss_bytes": 726581248,
+      "disk_write_bytes": 40769143,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 6.387204231999931,
+        "duckdb_load_s": 0.7333205309987534,
+        "self_vmhwm_bytes": 726581248,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 37652611,
+        "parquet_bytes": 3116532,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.17999996
+      },
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 1
+    },
+    {
+      "status": "skipped",
+      "error": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf",
+      "file": "RDSC2501",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6180395160045009,
+      "total_s": 0.6852838240010897,
+      "peak_rss_bytes": 205152256,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "details": {
+        "convert_s": 0.5511335369956214,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 205152256,
+        "child_maxrss_bytes": 131895296
+      },
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.8785757609875873,
+      "total_s": 0.8785757609875873,
+      "peak_rss_bytes": 261144576,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.5396003239875427,
+        "duckdb_load_s": 0.3389754370000446,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 261144576,
+        "child_maxrss_bytes": 131862528
+      },
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5736708119948162,
+      "total_s": 0.5736708119948162,
+      "peak_rss_bytes": 131846144,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 499,
+      "details": {
+        "convert_s": 0.5355750699964119,
+        "query_s": 0.038095741998404264,
+        "parquet_bytes": 2291037,
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "self_vmhwm_bytes": 114593792,
+        "child_maxrss_bytes": 131846144
+      },
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.0334393990051467,
+      "total_s": 0.0334393990051467,
+      "peak_rss_bytes": 116551680,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "cached_parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 116551680,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.148291566001717,
+      "total_s": 0.44343142000434455,
+      "peak_rss_bytes": 167952384,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 167952384,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6776310549903428,
+      "total_s": 0.6776310549903428,
+      "peak_rss_bytes": 252276736,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 252276736,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09748244199727196,
+      "total_s": 0.09748244199727196,
+      "peak_rss_bytes": 94347264,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "self_vmhwm_bytes": 94347264,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10302387400588486,
+      "total_s": 0.10302387400588486,
+      "peak_rss_bytes": 123551744,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": "119781839.18",
+        "self_vmhwm_bytes": 123551744,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 10.38613482400251,
+      "total_s": 10.38613482400251,
+      "peak_rss_bytes": 1061281792,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 3.4317530279950006,
+        "dbfread_s": 5.354984436999075,
+        "duckdb_load_s": 1.5993973590084352,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1061281792,
+        "child_maxrss_bytes": 92217344
+      },
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.775933733006241,
+      "total_s": 6.775933733006241,
+      "peak_rss_bytes": 1033531392,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.13748708200000692,
+        "dbfread_pandas_s": 6.254919911996694,
+        "duckdb_load_s": 0.3835267390095396,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1033531392,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.855107028997736,
+      "total_s": 6.855107028997736,
+      "peak_rss_bytes": 716775424,
+      "disk_write_bytes": 40769143,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 6.0422149100049865,
+        "duckdb_load_s": 0.8128921189927496,
+        "self_vmhwm_bytes": 716775424,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 37652611,
+        "parquet_bytes": 3116532,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000002
+      },
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.47920521401101723,
+      "total_s": 0.5301273170043714,
+      "peak_rss_bytes": 208142336,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "details": {
+        "convert_s": 0.42971677900641225,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 208142336,
+        "child_maxrss_bytes": 131833856
+      },
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.8696484430111013,
+      "total_s": 0.8696484430111013,
+      "peak_rss_bytes": 258113536,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.5341575210040901,
+        "duckdb_load_s": 0.33549092200701125,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 258113536,
+        "child_maxrss_bytes": 131923968
+      },
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5861666820128448,
+      "total_s": 0.5861666820128448,
+      "peak_rss_bytes": 131743744,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 499,
+      "details": {
+        "convert_s": 0.5496145380020607,
+        "query_s": 0.036552144010784104,
+        "parquet_bytes": 2291037,
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "self_vmhwm_bytes": 118726656,
+        "child_maxrss_bytes": 131743744
+      },
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03327769000316039,
+      "total_s": 0.03327769000316039,
+      "peak_rss_bytes": 118702080,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "cached_parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 118702080,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.13147403100447264,
+      "total_s": 0.4322060650010826,
+      "peak_rss_bytes": 169160704,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 169160704,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6546369279967621,
+      "total_s": 0.6546369279967621,
+      "peak_rss_bytes": 243699712,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 243699712,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09630322399607394,
+      "total_s": 0.09630322399607394,
+      "peak_rss_bytes": 92254208,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "self_vmhwm_bytes": 92254208,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10714644700055942,
+      "total_s": 0.10714644700055942,
+      "peak_rss_bytes": 121540608,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": "119781839.18",
+        "self_vmhwm_bytes": 121540608,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 8.183041502008564,
+      "total_s": 8.183041502008564,
+      "peak_rss_bytes": 1061949440,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 2.639151102004689,
+        "dbfread_s": 4.215986951996456,
+        "duckdb_load_s": 1.3279034480074188,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1061949440,
+        "child_maxrss_bytes": 92311552
+      },
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.712284356006421,
+      "total_s": 6.712284356006421,
+      "peak_rss_bytes": 1033748480,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.1382500500039896,
+        "dbfread_pandas_s": 6.233450792002259,
+        "duckdb_load_s": 0.3405835140001727,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1033748480,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 7.500700667005731,
+      "total_s": 7.500700667005731,
+      "peak_rss_bytes": 712802304,
+      "disk_write_bytes": 40769143,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 6.701578029009397,
+        "duckdb_load_s": 0.7991226379963337,
+        "self_vmhwm_bytes": 712802304,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 37652611,
+        "parquet_bytes": 3116532,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.17999999
+      },
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5605416199978208,
+      "total_s": 0.6271198689937592,
+      "peak_rss_bytes": 207347712,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "details": {
+        "convert_s": 0.4864708819950465,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 207347712,
+        "child_maxrss_bytes": 131891200
+      },
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.8786625369975809,
+      "total_s": 0.8786625369975809,
+      "peak_rss_bytes": 261136384,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.5386425629985752,
+        "duckdb_load_s": 0.34001997399900574,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 261136384,
+        "child_maxrss_bytes": 131887104
+      },
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.581821307001519,
+      "total_s": 0.581821307001519,
+      "peak_rss_bytes": 132194304,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 499,
+      "details": {
+        "convert_s": 0.5433380159956869,
+        "query_s": 0.03848329100583214,
+        "parquet_bytes": 2291037,
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "self_vmhwm_bytes": 127004672,
+        "child_maxrss_bytes": 132194304
+      },
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.033480418991530314,
+      "total_s": 0.033480418991530314,
+      "peak_rss_bytes": 120868864,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "cached_parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 120868864,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.13729354200768284,
+      "total_s": 0.4494095179979922,
+      "peak_rss_bytes": 164294656,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 164294656,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6742718069872353,
+      "total_s": 0.6742718069872353,
+      "peak_rss_bytes": 252235776,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 252235776,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09982403898902703,
+      "total_s": 0.09982403898902703,
+      "peak_rss_bytes": 94433280,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "self_vmhwm_bytes": 94433280,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.1085822759923758,
+      "total_s": 0.1085822759923758,
+      "peak_rss_bytes": 115277824,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": "119781839.18",
+        "self_vmhwm_bytes": 115277824,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 8.071561624004971,
+      "total_s": 8.071561624004971,
+      "peak_rss_bytes": 1056813056,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 2.9251826319959946,
+        "dbfread_s": 3.940731382012018,
+        "duckdb_load_s": 1.2056476099969586,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1056813056,
+        "child_maxrss_bytes": 92241920
+      },
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.206855700002052,
+      "total_s": 6.206855700002052,
+      "peak_rss_bytes": 1033306112,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.11355551700398792,
+        "dbfread_pandas_s": 5.809399703997769,
+        "duckdb_load_s": 0.2839004790002946,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1033306112,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 6.784700591000728,
+      "total_s": 6.784700591000728,
+      "peak_rss_bytes": 706486272,
+      "disk_write_bytes": 40769143,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 5.897570507993805,
+        "duckdb_load_s": 0.8871300830069231,
+        "self_vmhwm_bytes": 706486272,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 37652611,
+        "parquet_bytes": 3116532,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.17999998
+      },
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5974857029941631,
+      "total_s": 0.6686817750014598,
+      "peak_rss_bytes": 198012928,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "details": {
+        "convert_s": 0.5313014830026077,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 198012928,
+        "child_maxrss_bytes": 132071424
+      },
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.895987759999116,
+      "total_s": 0.895987759999116,
+      "peak_rss_bytes": 258347008,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.536673474998679,
+        "duckdb_load_s": 0.35931428500043694,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 258347008,
+        "child_maxrss_bytes": 131801088
+      },
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5704973630054155,
+      "total_s": 0.5704973630054155,
+      "peak_rss_bytes": 131727360,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 499,
+      "details": {
+        "convert_s": 0.5362416760035558,
+        "query_s": 0.03425568700185977,
+        "parquet_bytes": 2291037,
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "self_vmhwm_bytes": 118583296,
+        "child_maxrss_bytes": 131727360
+      },
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03351033999933861,
+      "total_s": 0.03351033999933861,
+      "peak_rss_bytes": 133554176,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "cached_parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 133554176,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.13840357000299264,
+      "total_s": 0.44595499300339725,
+      "peak_rss_bytes": 166952960,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 166952960,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.6367538729973603,
+      "total_s": 0.6367538729973603,
+      "peak_rss_bytes": 258289664,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 258289664,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09966322900436353,
+      "total_s": 0.09966322900436353,
+      "peak_rss_bytes": 94437376,
+      "disk_write_bytes": 0,
+      "rows_verified": 53631,
+      "details": {
+        "self_vmhwm_bytes": 94437376,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_count",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10429831199871842,
+      "total_s": 0.10429831199871842,
+      "peak_rss_bytes": 114896896,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": "119781839.18",
+        "self_vmhwm_bytes": 114896896,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "A_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 9.052382261987077,
+      "total_s": 9.052382261987077,
+      "peak_rss_bytes": 1067769856,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 3.3371436419984093,
+        "dbfread_s": 4.208089419000316,
+        "duckdb_load_s": 1.5071492009883514,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1067769856,
+        "child_maxrss_bytes": 92151808
+      },
+      "file": "RDSC2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 5.81236025999533,
+      "total_s": 5.81236025999533,
+      "peak_rss_bytes": 1033388032,
+      "disk_write_bytes": 37652611,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.10296718399331439,
+        "dbfread_pandas_s": 5.319624878000468,
+        "duckdb_load_s": 0.3897681980015477,
+        "dbf_bytes": 37652611,
+        "self_vmhwm_bytes": 1033388032,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 7.0440744849911425,
+      "total_s": 7.0440744849911425,
+      "peak_rss_bytes": 741416960,
+      "disk_write_bytes": 40769143,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 6.186566007992951,
+        "duckdb_load_s": 0.8575084769981913,
+        "self_vmhwm_bytes": 741416960,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 37652611,
+        "parquet_bytes": 3116532,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005
+      },
+      "file": "RDSC2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.4899220749939559,
+      "total_s": 0.5612833869963652,
+      "peak_rss_bytes": 196964352,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "details": {
+        "convert_s": 0.42538749300001655,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 196964352,
+        "child_maxrss_bytes": 131964928
+      },
+      "file": "RDSC2501",
+      "workflow": "E_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.7409209039906273,
+      "total_s": 0.7409209039906273,
+      "peak_rss_bytes": 251969536,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 53631,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.3850630839879159,
+        "duckdb_load_s": 0.3558578200027114,
+        "parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 251969536,
+        "child_maxrss_bytes": 131944448
+      },
+      "file": "RDSC2501",
+      "workflow": "E_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.5771509329933906,
+      "total_s": 0.5771509329933906,
+      "peak_rss_bytes": 132042752,
+      "disk_write_bytes": 2291037,
+      "rows_verified": 499,
+      "details": {
+        "convert_s": 0.5407932480011368,
+        "query_s": 0.03635768499225378,
+        "parquet_bytes": 2291037,
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "self_vmhwm_bytes": 124915712,
+        "child_maxrss_bytes": 132042752
+      },
+      "file": "RDSC2501",
+      "workflow": "E_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.03495181701146066,
+      "total_s": 0.03495181701146066,
+      "peak_rss_bytes": 125038592,
+      "disk_write_bytes": 0,
+      "rows_verified": 499,
+      "details": {
+        "agg_groups": 499,
+        "agg_val_tot_sum": 119781839.18000005,
+        "cached_parquet_bytes": 2291037,
+        "self_vmhwm_bytes": 125038592,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSC2501",
+      "workflow": "E_cached_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.08970776399655733,
+      "total_s": 1.7275719039898831,
+      "peak_rss_bytes": 175087616,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 175087616,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 2.042789384999196,
+      "total_s": 2.042789384999196,
+      "peak_rss_bytes": 378998784,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 378998784,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.3201878029940417,
+      "total_s": 0.3201878029940417,
+      "peak_rss_bytes": 88268800,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "self_vmhwm_bytes": 88268800,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.3415070699993521,
+      "total_s": 0.3415070699993521,
+      "peak_rss_bytes": 127852544,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": "435555819.75",
+        "self_vmhwm_bytes": 127852544,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 40.9483640959952,
+      "total_s": 40.9483640959952,
+      "peak_rss_bytes": 3536908288,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 15.00156917599088,
+        "dbfread_s": 19.746562569998787,
+        "duckdb_load_s": 6.200232350005535,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3536908288,
+        "child_maxrss_bytes": 92151808
+      },
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 29.757379385991953,
+      "total_s": 29.757379385991953,
+      "peak_rss_bytes": 3990188032,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.57175509899389,
+        "dbfread_pandas_s": 28.253675287007354,
+        "duckdb_load_s": 0.9319489999907091,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3990188032,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 29.059897294995608,
+      "total_s": 29.059897294995608,
+      "peak_rss_bytes": 1439588352,
+      "disk_write_bytes": 180915882,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 26.771902106003836,
+        "duckdb_load_s": 2.287995188991772,
+        "self_vmhwm_bytes": 1439588352,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 167180737,
+        "parquet_bytes": 13735145,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.7499986
+      },
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 1
+    },
+    {
+      "status": "skipped",
+      "error": "HTTPException: HTTP Error: Failed to download extension \"read_dbf\" at URL \"http://community-extensions.duckdb.org/v2.0.1/linux_amd64/read_dbf.duckdb_extension.gz\" (HTTP 404)\n\nCandidate extensions: \"core_functions\", \"azure\", \"delta\", \"md\", \"legacy_parser\"\nFor more info, visit https://duckdb.org/docs/current/extensions/troubleshooting?version=v2.0.1&platform=linux_amd64&extension=read_dbf",
+      "file": "RDSP2501",
+      "workflow": "D_datasus_dbc_read_dbf",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 2.051658750002389,
+      "total_s": 2.459826427002554,
+      "peak_rss_bytes": 316588032,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "details": {
+        "convert_s": 1.9778663120087003,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 293425152,
+        "child_maxrss_bytes": 316588032
+      },
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 2.9622492700000294,
+      "total_s": 2.9622492700000294,
+      "peak_rss_bytes": 366661632,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 2.296328625991009,
+        "duckdb_load_s": 0.6659206440090202,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 366661632,
+        "child_maxrss_bytes": 316682240
+      },
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 2.405272889009211,
+      "total_s": 2.405272889009211,
+      "peak_rss_bytes": 316661760,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 1354,
+      "details": {
+        "convert_s": 2.361369366000872,
+        "query_s": 0.04390352300833911,
+        "parquet_bytes": 9550506,
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "self_vmhwm_bytes": 111075328,
+        "child_maxrss_bytes": 316661760
+      },
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.05453639700135682,
+      "total_s": 0.05453639700135682,
+      "peak_rss_bytes": 127868928,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "cached_parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 127868928,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "rep": 1
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.14982746200985275,
+      "total_s": 1.842604208010016,
+      "peak_rss_bytes": 176275456,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 176275456,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.7846213260054355,
+      "total_s": 1.7846213260054355,
+      "peak_rss_bytes": 383709184,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 383709184,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.29963635199237615,
+      "total_s": 0.29963635199237615,
+      "peak_rss_bytes": 90279936,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "self_vmhwm_bytes": 90279936,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.33858036299352534,
+      "total_s": 0.33858036299352534,
+      "peak_rss_bytes": 111255552,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": "435555819.75",
+        "self_vmhwm_bytes": 111255552,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 42.07089814799838,
+      "total_s": 42.07089814799838,
+      "peak_rss_bytes": 3551481856,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 14.966405472005135,
+        "dbfread_s": 21.493715318996692,
+        "duckdb_load_s": 5.61077735699655,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3551481856,
+        "child_maxrss_bytes": 92332032
+      },
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 32.546244661993114,
+      "total_s": 32.546244661993114,
+      "peak_rss_bytes": 3988025344,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.6022418399952585,
+        "dbfread_pandas_s": 31.353343515002052,
+        "duckdb_load_s": 0.5906593069958035,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3988025344,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 17.63751167699229,
+      "total_s": 17.63751167699229,
+      "peak_rss_bytes": 1393573888,
+      "disk_write_bytes": 180915882,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 16.325541933998466,
+        "duckdb_load_s": 1.3119697429938242,
+        "self_vmhwm_bytes": 1393573888,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 167180737,
+        "parquet_bytes": 13735145,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999857
+      },
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.4188305790012237,
+      "total_s": 1.650706343993079,
+      "peak_rss_bytes": 325967872,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "details": {
+        "convert_s": 1.3721058109949809,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 325967872,
+        "child_maxrss_bytes": 316354560
+      },
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.7332858869922347,
+      "total_s": 1.7332858869922347,
+      "peak_rss_bytes": 360583168,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 1.3570643429993652,
+        "duckdb_load_s": 0.37622154399286956,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 360583168,
+        "child_maxrss_bytes": 316420096
+      },
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.397404371004086,
+      "total_s": 1.397404371004086,
+      "peak_rss_bytes": 316338176,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 1354,
+      "details": {
+        "convert_s": 1.3716148900130065,
+        "query_s": 0.025789480991079472,
+        "parquet_bytes": 9550506,
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "self_vmhwm_bytes": 117620736,
+        "child_maxrss_bytes": 316338176
+      },
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.024979492009151727,
+      "total_s": 0.024979492009151727,
+      "peak_rss_bytes": 117510144,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "cached_parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 117510144,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "rep": 2
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09486163499241229,
+      "total_s": 1.0349414059892297,
+      "peak_rss_bytes": 178118656,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 178118656,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1364941609936068,
+      "total_s": 1.1364941609936068,
+      "peak_rss_bytes": 371998720,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 371998720,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.23325101300724782,
+      "total_s": 0.23325101300724782,
+      "peak_rss_bytes": 90112000,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "self_vmhwm_bytes": 90112000,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.24388189699675422,
+      "total_s": 0.24388189699675422,
+      "peak_rss_bytes": 117567488,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": "435555819.75",
+        "self_vmhwm_bytes": 117567488,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 28.648918788006995,
+      "total_s": 28.648918788006995,
+      "peak_rss_bytes": 3553042432,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 10.668403179995948,
+        "dbfread_s": 14.165350951006985,
+        "duckdb_load_s": 3.815164657004061,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3553042432,
+        "child_maxrss_bytes": 92164096
+      },
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 20.72195921499224,
+      "total_s": 20.72195921499224,
+      "peak_rss_bytes": 3987611648,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.42751877498812973,
+        "dbfread_pandas_s": 19.7692602850002,
+        "duckdb_load_s": 0.525180155003909,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3987611648,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 16.668611464003334,
+      "total_s": 16.668611464003334,
+      "peak_rss_bytes": 1421713408,
+      "disk_write_bytes": 180915882,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 15.374588338003377,
+        "duckdb_load_s": 1.2940231259999564,
+        "self_vmhwm_bytes": 1421713408,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 167180737,
+        "parquet_bytes": 13735145,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.7499987
+      },
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.4641783249971922,
+      "total_s": 1.7129864940070547,
+      "peak_rss_bytes": 330248192,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "details": {
+        "convert_s": 1.4140175320062554,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 330248192,
+        "child_maxrss_bytes": 316108800
+      },
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.7435748079878977,
+      "total_s": 1.7435748079878977,
+      "peak_rss_bytes": 365420544,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 1.386521554988576,
+        "duckdb_load_s": 0.35705325299932156,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 365420544,
+        "child_maxrss_bytes": 317034496
+      },
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.39065176800068,
+      "total_s": 1.39065176800068,
+      "peak_rss_bytes": 316436480,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 1354,
+      "details": {
+        "convert_s": 1.364775088004535,
+        "query_s": 0.025876679996144958,
+        "parquet_bytes": 9550506,
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "self_vmhwm_bytes": 121524224,
+        "child_maxrss_bytes": 316436480
+      },
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.025324510992504656,
+      "total_s": 0.025324510992504656,
+      "peak_rss_bytes": 115146752,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "cached_parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 115146752,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "rep": 3
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.09872171899769455,
+      "total_s": 1.0181021689932095,
+      "peak_rss_bytes": 178122752,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 178122752,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.2998733169952175,
+      "total_s": 1.2998733169952175,
+      "peak_rss_bytes": 381943808,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 381943808,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.2792609819880454,
+      "total_s": 0.2792609819880454,
+      "peak_rss_bytes": 98627584,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "self_vmhwm_bytes": 98627584,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.4880909019993851,
+      "total_s": 0.4880909019993851,
+      "peak_rss_bytes": 130265088,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": "435555819.75",
+        "self_vmhwm_bytes": 130265088,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 31.129731277993415,
+      "total_s": 31.129731277993415,
+      "peak_rss_bytes": 3553574912,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 12.990606259991182,
+        "dbfread_s": 14.320172076011659,
+        "duckdb_load_s": 3.818952941990574,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3553574912,
+        "child_maxrss_bytes": 92270592
+      },
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 20.49765644800209,
+      "total_s": 20.49765644800209,
+      "peak_rss_bytes": 3989606400,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.43002555100247264,
+        "dbfread_pandas_s": 19.53800913899613,
+        "duckdb_load_s": 0.5296217580034863,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3989606400,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 16.725814355988405,
+      "total_s": 16.725814355988405,
+      "peak_rss_bytes": 1422692352,
+      "disk_write_bytes": 180915882,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 15.431599591989652,
+        "duckdb_load_s": 1.2942147639987525,
+        "self_vmhwm_bytes": 1422692352,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 167180737,
+        "parquet_bytes": 13735145,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.7499986
+      },
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.458554719996755,
+      "total_s": 1.6991096609999659,
+      "peak_rss_bytes": 327393280,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "details": {
+        "convert_s": 1.4099153349961853,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 327393280,
+        "child_maxrss_bytes": 315940864
+      },
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.746038958997815,
+      "total_s": 1.746038958997815,
+      "peak_rss_bytes": 365547520,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 1.3890059669938637,
+        "duckdb_load_s": 0.3570329920039512,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 365547520,
+        "child_maxrss_bytes": 315850752
+      },
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.3995365709997714,
+      "total_s": 1.3995365709997714,
+      "peak_rss_bytes": 316579840,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 1354,
+      "details": {
+        "convert_s": 1.374173409989453,
+        "query_s": 0.025363161010318436,
+        "parquet_bytes": 9550506,
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "self_vmhwm_bytes": 114188288,
+        "child_maxrss_bytes": 316579840
+      },
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.025671149996924214,
+      "total_s": 0.025671149996924214,
+      "peak_rss_bytes": 121434112,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "cached_parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 121434112,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "rep": 4
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.10011965599551331,
+      "total_s": 1.0052220359939383,
+      "peak_rss_bytes": 166330368,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "first_batch_rows": 2048,
+        "self_vmhwm_bytes": 166330368,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.1501685139955953,
+      "total_s": 1.1501685139955953,
+      "peak_rss_bytes": 377143296,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "self_vmhwm_bytes": 377143296,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.22648785199271515,
+      "total_s": 0.22648785199271515,
+      "peak_rss_bytes": 94277632,
+      "disk_write_bytes": 0,
+      "rows_verified": 238144,
+      "details": {
+        "self_vmhwm_bytes": 94277632,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_count",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.2423707380075939,
+      "total_s": 0.2423707380075939,
+      "peak_rss_bytes": 119619584,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": "435555819.75",
+        "self_vmhwm_bytes": 119619584,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "A_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 28.525956747995224,
+      "total_s": 28.525956747995224,
+      "peak_rss_bytes": 3549523968,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 10.557512677987688,
+        "dbfread_s": 14.06601681500615,
+        "duckdb_load_s": 3.9024272550013848,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3549523968,
+        "child_maxrss_bytes": 91996160
+      },
+      "file": "RDSP2501",
+      "workflow": "B_datasus_dbc_dbfread",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 20.646615486009978,
+      "total_s": 20.646615486009978,
+      "peak_rss_bytes": 3987849216,
+      "disk_write_bytes": 167180737,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 0.43111076700733975,
+        "dbfread_pandas_s": 19.682676716998685,
+        "duckdb_load_s": 0.5328280020039529,
+        "dbf_bytes": 167180737,
+        "self_vmhwm_bytes": 3987849216,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "C1_pyreaddbc_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 16.56895886300481,
+      "total_s": 16.56895886300481,
+      "peak_rss_bytes": 1459613696,
+      "disk_write_bytes": 180915882,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "load_df_s": 15.252937365992693,
+        "duckdb_load_s": 1.316021497012116,
+        "self_vmhwm_bytes": 1459613696,
+        "child_maxrss_bytes": 0,
+        "dbf_bytes": 167180737,
+        "parquet_bytes": 13735145,
+        "duckdb_version": "1.5.6",
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.7499987
+      },
+      "file": "RDSP2501",
+      "workflow": "C2_pysus_pandas",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.452107128003263,
+      "total_s": 1.6891492739960086,
+      "peak_rss_bytes": 325238784,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "details": {
+        "convert_s": 1.4043870320019778,
+        "first_batch_rows": 2048,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 325238784,
+        "child_maxrss_bytes": 316596224
+      },
+      "file": "RDSP2501",
+      "workflow": "E_stream",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.7460355460061692,
+      "total_s": 1.7460355460061692,
+      "peak_rss_bytes": 365735936,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 238144,
+      "first_row_non_null": true,
+      "details": {
+        "convert_s": 1.3824713149952004,
+        "duckdb_load_s": 0.3635642310109688,
+        "parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 365735936,
+        "child_maxrss_bytes": 316239872
+      },
+      "file": "RDSP2501",
+      "workflow": "E_materialize",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 1.406993826996768,
+      "total_s": 1.406993826996768,
+      "peak_rss_bytes": 316289024,
+      "disk_write_bytes": 9550506,
+      "rows_verified": 1354,
+      "details": {
+        "convert_s": 1.380936016998021,
+        "query_s": 0.02605780999874696,
+        "parquet_bytes": 9550506,
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "self_vmhwm_bytes": 118251520,
+        "child_maxrss_bytes": 316289024
+      },
+      "file": "RDSP2501",
+      "workflow": "E_agg",
+      "rep": 5
+    },
+    {
+      "status": "ok",
+      "first_row_s": 0.02558298100484535,
+      "total_s": 0.02558298100484535,
+      "peak_rss_bytes": 117682176,
+      "disk_write_bytes": 0,
+      "rows_verified": 1354,
+      "details": {
+        "agg_groups": 1354,
+        "agg_val_tot_sum": 435555819.74999255,
+        "cached_parquet_bytes": 9550506,
+        "self_vmhwm_bytes": 117682176,
+        "child_maxrss_bytes": 0
+      },
+      "file": "RDSP2501",
+      "workflow": "E_cached_agg",
+      "rep": 5
+    }
+  ]
+}

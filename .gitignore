@@ -8,6 +8,7 @@ venv
 
 # DATASUS fixtures (including /test/data/families/) are downloaded, not committed
 /test/data/
+/test/data/bench/
 /test/reference/
 /scripts/parity/__pycache__/
 
