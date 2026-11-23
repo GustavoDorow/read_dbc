@@ -71,18 +71,18 @@ The C API v2 regression records the arguments seen by each file's bind callback 
 
 The standalone C reproduction compiled against the v2 header and ran against the patched library. Its bind callback checked that it received `latin-1`.
 
-Local Ninja debug build with sanitizers disabled.
+Local Ninja debug build with sanitizers disabled, measured on branch `fix/multi-file-forward-named-params` at commit `57a0c9a29653a2c9afaca730ee35b193d3b539e2`.
 
-| Test selection | Passed | Assertions |
-| --- | ---: | ---: |
-| New C API v2 wrapper regressions (`V2 table: multi-file wrapper*`) | 3 | 415 |
-| `unittest "[capi]"` | 207 | 717,820 |
-| `unittest "[capi_v2]"` | 623 | 160,850 |
-| CSV multi-file, glob and schema-union selection | 16 | 3,330 |
-| Parquet multi-file and schema-union selection | 23 | 987 |
-| Shared multi-file and JSON single-file wrapper selection | 5 | 418 |
+| Test selection | Test cases passed |
+| --- | ---: |
+| New C API v2 wrapper regressions (`V2 table: multi-file wrapper*`) | 3 |
+| `unittest "[capi]"` | 207 |
+| `unittest "[capi_v2]"` | 623 |
+| CSV multi-file, glob and schema-union selection (16 matched; 1 skipped: `require tpch`) | 15 |
+| Parquet multi-file and schema-union selection | 23 |
+| Shared multi-file and JSON single-file wrapper selection | 5 |
 
-The Parquet selection reported one `mode skip instable` directive. Changed-file formatting passed with DuckDB's clang-format 11.0.1 tooling (`scripts/format.py --check --skip-typos origin/main`) and `git diff --check` passed.
+Changed-file formatting passed with DuckDB's clang-format 11.0.1 tooling (`scripts/format.py --check --skip-typos origin/main`) and `git diff --check` passed.
 
 ## Compatibility and backport
 
